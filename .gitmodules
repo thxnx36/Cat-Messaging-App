@@ -1,3 +1,4 @@
-[submodule "frontend"]
-	path = frontend
+
+[submodule "front"]
+	path = front
 	url = git@github.com:thxnx36/Messaging-App-Frontend.git
