@@ -1,39 +1,24 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const http = require('http');
-const socketIo = require('socket.io');
 require('dotenv').config();
 
+const express = require('express');
+const mongoose = require('mongoose');
+const userRoutes = require('./routes/userRoutes');
+
 const app = express();
-const server = http.createServer(app);
-const io = socketIo(server);
 
 // Middleware
-app.use(cors());
-app.use(express.json());
+app.use(express.json()); // ต้องมี middleware นี้
 
-// MongoDB connection
+// เชื่อมต่อ MongoDB
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log('MongoDB connected');
-  })
-  .catch(err => {
-    console.error('MongoDB connection error:', err);
-    process.exit(1); // Exit the process if there's a connection error
-  });
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection error:', err));
 
-// Socket.IO setup
-io.on('connection', (socket) => {
-  console.log('New client connected');
+// เชื่อมต่อเส้นทาง
+app.use('/api/users', userRoutes);
 
-  socket.on('disconnect', () => {
-    console.log('Client disconnected');
-  });
-});
-
-// Start server
+// รันเซิร์ฟเวอร์
 const PORT = process.env.PORT || 5003;
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

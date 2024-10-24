@@ -1,0 +1,18 @@
+### ลงทะเบียนผู้ใช้
+POST http://localhost:3000/api/users/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "email": "test@example.com",
+  "password": "yourpassword"
+}
+
+### ล็อกอินผู้ใช้
+POST http://localhost:3000/api/users/login
+Content-Type: application/json
+
+{
+  "email": "test@example.com",
+  "password": "yourpassword"
+}

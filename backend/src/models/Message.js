@@ -1,12 +1,10 @@
 const mongoose = require('mongoose');
 
 const messageSchema = new mongoose.Schema({
-  sender: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  receiver: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+  senderId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+  groupId: { type: String, default: null }, // ถ้าเป็นแชทกลุ่ม
   content: { type: String, required: true },
   timestamp: { type: Date, default: Date.now },
 });
 
-const Message = mongoose.model('Message', messageSchema);
-
-module.exports = Message;
+module.exports = mongoose.model('Message', messageSchema);
