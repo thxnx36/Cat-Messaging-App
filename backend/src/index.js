@@ -1,13 +1,16 @@
+// backend/server.js
 require('dotenv').config();
 
 const express = require('express');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
+const cors = require('cors');
 
 const app = express();
 
 // Middleware
 app.use(express.json()); // ต้องมี middleware นี้
+app.use(cors()); // อนุญาต CORS สำหรับทุกโดเมน
 
 // เชื่อมต่อ MongoDB
 mongoose.connect(process.env.MONGO_URI)
