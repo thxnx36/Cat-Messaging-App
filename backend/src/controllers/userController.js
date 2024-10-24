@@ -1,72 +1,67 @@
-// backend/src/controllers/userController.js
 const User = require('../models/User');
-const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-// ลงทะเบียนผู้ใช้
+// การลงทะเบียนผู้ใช้
 exports.registerUser = async (req, res) => {
-  let { username, email, password } = req.body;
-  console.log('Received:', req.body); // Debugging
+    let { username, email, password } = req.body;
+    console.log('Received:', req.body); // Debugging
 
-  // Trim ข้อมูลจากฟอร์ม
-  username = username.trim();
-  email = email.trim().toLowerCase(); // lowercase email เพื่อป้องกันความผิดพลาด
-  password = password.trim(); // Trim password here
+    username = username.trim();
+    email = email.trim().toLowerCase(); // lowercase email
+    password = password.trim(); // Trim password
 
-  if (!username || !email || !password) {
-    return res.status(400).json({ message: 'Username, email, and password are required' });
-  }
-
-  try {
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: 'Email already in use' });
+    if (!username || !email || !password) {
+        return res.status(400).json({ message: 'Username, email, and password are required' });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    console.log('Password hashed at registration:', hashedPassword);
-    const newUser = new User({ username, email, password: hashedPassword });
-    
-    await newUser.save();
-    res.status(201).json({ message: 'User registered successfully' });
-  } catch (error) {
-    res.status(500).json({ message: 'Error saving user: ' + error.message });
-  }
+    try {
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ message: 'Email already in use' });
+        }
+
+        // ใช้ bcrypt แฮชรหัสผ่าน
+        const newUser = new User({ username, email, password });        
+        await newUser.save();
+        res.status(201).json({ message: 'User registered successfully' });
+    } catch (error) {
+        res.status(500).json({ message: 'Error saving user: ' + error.message });
+    }
 };
 
-// ล็อกอินผู้ใช้
+// การล็อกอินผู้ใช้
 exports.loginUser = async (req, res) => {
-  let { email, password } = req.body;
-  console.log('Password entered:', password); // รหัสผ่านที่ผู้ใช้ป้อน
+    let { email, password } = req.body;
+    console.log('Password entered:', password); // Debugging
 
-  email = email.trim().toLowerCase(); 
-  password = password.trim(); 
+    email = email.trim().toLowerCase(); 
+    password = password.trim(); 
 
-  if (!email || !password) {
-    return res.status(400).json({ message: 'Email and password are required' });
-  }
-
-  try {
-    const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+    if (!email || !password) {
+        return res.status(400).json({ message: 'Email and password are required' });
     }
 
-    console.log('User found:', user);
-    console.log('Hashed password in DB:', user.password);
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
 
-    // เปรียบเทียบรหัสผ่านที่กรอกกับรหัสผ่านที่แฮชในฐานข้อมูล
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    console.log('Password match result:', passwordMatch);
+        console.log('User found:', user);
+        console.log('Hashed password in DB:', user.password);
+        
+        // ใช้ comparePassword ที่เขียนใน schema
+        const passwordMatch = await user.comparePassword(password); // ตรวจสอบความเท่ากัน
+        console.log('Password match result:', passwordMatch);
 
-    if (!passwordMatch) {
-      return res.status(401).json({ message: 'Invalid credentials' });
+        if (!passwordMatch) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
+
+        // สร้าง token
+        const token = jwt.sign({ userId: user._id }, 'secretKey', { expiresIn: '1h' });
+        res.json({ token });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
-
-    // สร้าง token
-    const token = jwt.sign({ userId: user._id }, 'secretKey', { expiresIn: '1h' });
-    res.json({ token });
-  } catch (error) {
-    res.status(500).json({ message: error.message });
-  }
 };
