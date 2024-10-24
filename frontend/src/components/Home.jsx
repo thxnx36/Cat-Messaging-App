@@ -1,55 +1,88 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import { Dropdown, Menu } from 'antd';
 
-const Home = () => {
-    return (
-        <Container>
-            <Content>
-                <Title>Welcome to the Chat Application</Title>
-                <ButtonGroup>
-                    <StyledLink to="/login">Login</StyledLink>
-                    <StyledLink to="/register">Register</StyledLink>
-                </ButtonGroup>
-            </Content>
-        </Container>
-    );
+const Home = ({ isLoggedIn, username, onLogout }) => {
+  const menu = (
+    <Menu>
+      <Menu.Item key="logout" onClick={onLogout}>
+        Log out
+      </Menu.Item>
+    </Menu>
+  );
+
+  return (
+    <Container>
+      <Header>
+        <Logo>MyApp</Logo>
+        <Nav>
+          {isLoggedIn ? (
+            <Dropdown overlay={menu}>
+                <Menu>
+                    <Username>{username}</Username> 
+                </Menu>
+            </Dropdown>
+          ) : (
+            <StyledLink to="/login">Log in</StyledLink>
+          )}
+        </Nav>
+      </Header>
+      <Content>
+        <h1>Welcome to the Chat Application</h1>
+      </Content>
+    </Container>
+  );
 };
 
 export default Home;
 
 // สไตล์ต่างๆ
 const Container = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f9fafb;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 `;
 
-const Content = styled.div`
-    text-align: center;
+const Header = styled.header`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 `;
 
-const Title = styled.h1`
-    font-size: 2.5rem;
-    color: #333;
-    margin-bottom: 2rem;
+const Logo = styled.div`
+  font-size: 24px;
+  font-weight: bold;
 `;
 
-const ButtonGroup = styled.div`
-    display: flex;
-    gap: 20px;
+const Nav = styled.div`
+  display: flex;
+  align-items: center;
 `;
 
 const StyledLink = styled(Link)`
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border-radius: 5px;
-    transition: background-color 0.3s ease;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
 
-    &:hover {
-        background-color: #0056b3;
-    }
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
+const Username = styled.span`
+  font-size: 16px;
+  cursor: pointer;
+`;
+
+const Content = styled.div`
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;

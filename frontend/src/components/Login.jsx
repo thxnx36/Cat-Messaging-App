@@ -1,110 +1,118 @@
 import React, { useState } from 'react';
-import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { Button, message } from 'antd';
 
-const Login = () => {
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [message, setMessage] = useState('');
-    const navigate = useNavigate();
+const Login = ({ onLogin }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        try {
-            const response = await axios.post('http://localhost:5003/api/users/login', {
-                email,
-                password,
-            });
-            localStorage.setItem('token', response.data.token);
-            setMessage('Login successful!');
-            navigate('/');
-        } catch (error) {
-            setMessage(error.response.data.message || 'Login failed!');
-        }
-    };
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:5003/api/users/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    return (
-        <Container>
-            <FormWrapper>
-                <Title>Login</Title>
-                <Form onSubmit={handleLogin}>
-                    <Input
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                    <Input
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                    <Button type="submit">Login</Button>
-                </Form>
-                {message && <Message>{message}</Message>}
-            </FormWrapper>
-        </Container>
-    );
+      const data = await response.json();
+      console.log(data); // Log response for debugging
+      if (response.ok) {
+        localStorage.setItem('username', data.username); // Save the username if needed
+        onLogin(data.username);
+        navigate('/');
+        message.success('Login successful!');
+      } else {
+        message.error(data.message);
+      }
+    } catch (error) {
+      console.error(error); // Log error for debugging
+      message.error('Login failed!');
+    }
+  };
+
+  return (
+    <Container>
+      <FormWrapper>
+        <Title>Login</Title>
+        <Form onSubmit={handleLogin}>
+          <Input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+          />
+          <Input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+          />
+          <Button type="primary" htmlType="submit" block>
+            Log in
+          </Button>
+        </Form>
+        <StyledLink to="/register">Don't have an account? Register</StyledLink>
+      </FormWrapper>
+    </Container>
+  );
 };
 
 export default Login;
 
+// Styled components...
+
+// Your styled components code remains unchanged.
+
 // สไตล์ต่างๆ
 const Container = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f9fafb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f9fafb;
 `;
 
 const FormWrapper = styled.div`
-    background: white;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 400px;
+  background: white;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  width: 400px;
 `;
 
 const Title = styled.h2`
-    font-size: 24px;
-    text-align: center;
-    margin-bottom: 20px;
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 20px;
 `;
 
 const Form = styled.form`
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 `;
 
 const Input = styled.input`
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 16px;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 16px;
 `;
 
-const Button = styled.button`
-    padding: 10px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    transition: background-color 0.3s ease;
+const StyledLink = styled(Link)`
+  display: block;
+  text-align: center;
+  margin-top: 10px;
+  color: #007bff;
 
-    &:hover {
-        background-color: #0056b3;
-    }
-`;
-
-const Message = styled.p`
-    margin-top: 15px;
-    text-align: center;
-    color: #ff4d4f;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
