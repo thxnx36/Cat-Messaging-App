@@ -20,11 +20,17 @@ const Home = ({ onLogout }) => {
       okText: 'Yes',
       cancelText: 'No',
       onOk: () => {
-        onLogout();
-        message.success('Logged out successfully');
+        // Show the success message first
+        message.success('BYE BYE!');
+        
+        // Call onLogout after a short delay
+        setTimeout(() => {
+          onLogout();
+        }, 500); // Delay for half a second
       },
     });
   };
+  
 
   const menu = (
     <Menu>
@@ -43,7 +49,7 @@ const Home = ({ onLogout }) => {
             <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
               <span>
                 <Username aria-label="User menu">
-                  {username} ▼
+                  {username} <span>☁</span>
                 </Username>
               </span>
             </Dropdown>
