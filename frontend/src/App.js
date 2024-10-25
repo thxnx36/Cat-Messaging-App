@@ -19,26 +19,42 @@ function App() {
   }, []);
 
   const handleLogin = (user) => {
-    localStorage.setItem('username', user);
-    setUsername(user);
-    setIsLoggedIn(true);
-    message.success('Login successful!');
+    if (user) {
+      localStorage.setItem('username', user);
+      setUsername(user);
+      setIsLoggedIn(true);
+      message.success('Login successful!');
+      console.log(user); // ตรวจสอบว่ามีค่า username ที่ถูกต้อง
+    } else {
+      console.error('User is undefined');
+    }
   };
+  
 
   const handleLogout = () => {
     localStorage.removeItem('username');
     setIsLoggedIn(false);
     setUsername('');
     message.success('Logged out successfully!');
+    window.location.reload(); 
   };
 
   return (
     <Router>
       <GlobalStyles />
       <Routes>
-        <Route path="/" element={<Home isLoggedIn={isLoggedIn} username={username} onLogout={handleLogout} />} />
-        <Route path="/login" element={isLoggedIn ? <Navigate to="/" /> : <Login onLogin={handleLogin} />} />
-        <Route path="/register" element={<Register />} />
+        <Route 
+          path="/" 
+          element={<Home isLoggedIn={isLoggedIn} username={username} onLogout={handleLogout} />} 
+        />
+        <Route 
+          path="/login" 
+          element={isLoggedIn ? <Navigate to="/" replace /> : <Login onLogin={handleLogin} />} 
+        />
+        <Route 
+          path="/register" 
+          element={isLoggedIn ? <Navigate to="/" replace /> : <Register />} 
+        />
       </Routes>
     </Router>
   );

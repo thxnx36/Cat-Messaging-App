@@ -32,7 +32,6 @@ exports.registerUser = async (req, res) => {
 // การล็อกอินผู้ใช้
 exports.loginUser = async (req, res) => {
     let { email, password } = req.body;
-    console.log('Password entered:', password); // Debugging
 
     email = email.trim().toLowerCase(); 
     password = password.trim(); 
@@ -47,12 +46,7 @@ exports.loginUser = async (req, res) => {
             return res.status(401).json({ message: 'Invalid credentials' });
         }
 
-        console.log('User found:', user);
-        console.log('Hashed password in DB:', user.password);
-        
-        // ใช้ comparePassword ที่เขียนใน schema
-        const passwordMatch = await user.comparePassword(password); // ตรวจสอบความเท่ากัน
-        console.log('Password match result:', passwordMatch);
+        const passwordMatch = await user.comparePassword(password);
 
         if (!passwordMatch) {
             return res.status(401).json({ message: 'Invalid credentials' });
@@ -60,7 +54,7 @@ exports.loginUser = async (req, res) => {
 
         // สร้าง token
         const token = jwt.sign({ userId: user._id }, 'secretKey', { expiresIn: '1h' });
-        res.json({ token });
+        res.json({ token, username: user.username }); // ส่ง username กลับด้วย
     } catch (error) {
         res.status(500).json({ message: error.message });
     }

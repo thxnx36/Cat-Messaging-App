@@ -1,12 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Dropdown, Menu } from 'antd';
+import { Dropdown, Menu, message, Modal } from 'antd';
 
-const Home = ({ isLoggedIn, username, onLogout }) => {
+const Home = ({ onLogout }) => {
+  const [username, setUsername] = useState(null);
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem('username');
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    Modal.confirm({
+      title: 'Confirm Logout',
+      content: 'Are you sure you want to log out?',
+      okText: 'Yes',
+      cancelText: 'No',
+      onOk: () => {
+        onLogout();
+        message.success('Logged out successfully');
+      },
+    });
+  };
+
   const menu = (
     <Menu>
-      <Menu.Item key="logout" onClick={onLogout}>
+      <Menu.Item key="logout" onClick={handleLogout}>
         Log out
       </Menu.Item>
     </Menu>
@@ -17,11 +39,13 @@ const Home = ({ isLoggedIn, username, onLogout }) => {
       <Header>
         <Logo>MyApp</Logo>
         <Nav>
-          {isLoggedIn ? (
-            <Dropdown overlay={menu}>
-                <Menu>
-                    <Username>{username}</Username> 
-                </Menu>
+          {username ? ( // Show username if logged in
+            <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
+              <span>
+                <Username aria-label="User menu">
+                  {username} ▼
+                </Username>
+              </span>
             </Dropdown>
           ) : (
             <StyledLink to="/login">Log in</StyledLink>
@@ -37,7 +61,8 @@ const Home = ({ isLoggedIn, username, onLogout }) => {
 
 export default Home;
 
-// สไตล์ต่างๆ
+// Styled components remain unchanged
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;

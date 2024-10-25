@@ -11,29 +11,28 @@ const Login = ({ onLogin }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5003/api/users/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ email, password }),
-      });
+        const response = await fetch('http://localhost:5003/api/users/login', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
+        });
 
-      const data = await response.json();
-      console.log(data); // Log response for debugging
-      if (response.ok) {
-        localStorage.setItem('username', data.username); // Save the username if needed
-        onLogin(data.username);
-        navigate('/');
-        message.success('Login successful!');
-      } else {
-        message.error(data.message);
-      }
+        const data = await response.json();
+        console.log(data); 
+
+        if (response.ok) {
+            localStorage.setItem('username', data.username); // บันทึก username
+            onLogin(data.username); // เรียกใช้งาน onLogin เพื่ออัปเดตสถานะใน App
+            navigate('/');
+        } else {
+            message.error(data.message);
+        }
     } catch (error) {
-      console.error(error); // Log error for debugging
-      message.error('Login failed!');
+        message.error('Login failed!');
     }
-  };
+};
 
   return (
     <Container>
@@ -66,11 +65,7 @@ const Login = ({ onLogin }) => {
 
 export default Login;
 
-// Styled components...
 
-// Your styled components code remains unchanged.
-
-// สไตล์ต่างๆ
 const Container = styled.div`
   display: flex;
   justify-content: center;
