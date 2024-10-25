@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom'; // นำเข้า useNavigate
 import { Dropdown, Menu, message, Modal } from 'antd';
 
 const Home = ({ onLogout }) => {
   const [username, setUsername] = useState(null);
+  const navigate = useNavigate(); // ใช้ useNavigate
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
@@ -30,7 +31,6 @@ const Home = ({ onLogout }) => {
       },
     });
   };
-  
 
   const menu = (
     <Menu>
@@ -39,6 +39,11 @@ const Home = ({ onLogout }) => {
       </Menu.Item>
     </Menu>
   );
+
+  // ฟังก์ชันในการนำทางไปยังหน้าแชท
+  const handleChatClick = () => {
+    navigate('/chat'); // นำทางไปยังหน้าแชท
+  };
 
   return (
     <Container>
@@ -60,6 +65,11 @@ const Home = ({ onLogout }) => {
       </Header>
       <Content>
         <h1>Welcome to the Chat Application</h1>
+        {username && ( // แสดงปุ่มเฉพาะเมื่อมีผู้ล็อกอิน
+          <StyledButton onClick={handleChatClick}>
+            Go to Chat
+          </StyledButton>
+        )}
       </Content>
     </Container>
   );
@@ -114,6 +124,21 @@ const Username = styled.span`
 const Content = styled.div`
   flex-grow: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+`;
+
+const StyledButton = styled.button`
+  padding: 10px 20px;
+  background-color: #28a745;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #218838;
+  }
 `;

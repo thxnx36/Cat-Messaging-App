@@ -1,16 +1,28 @@
-// backend/server.js
 require('dotenv').config();
-
 const express = require('express');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
 const cors = require('cors');
+const http = require('http'); 
+const { Server } = require('socket.io'); 
 
 const app = express();
+const server = http.createServer(app); 
+const io = new Server(server, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+    credentials: true,
+  },
+});
 
 // Middleware
-app.use(express.json()); // ต้องมี middleware นี้
-app.use(cors()); // อนุญาต CORS สำหรับทุกโดเมน
+app.use(express.json()); 
+app.use(cors({
+  origin: 'http://localhost:3000',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true,
+}));
 
 // เชื่อมต่อ MongoDB
 mongoose.connect(process.env.MONGO_URI)
@@ -20,22 +32,43 @@ mongoose.connect(process.env.MONGO_URI)
 // เชื่อมต่อเส้นทาง
 app.use('/api/users', userRoutes);
 
+// ฟังก์ชันสำหรับค้นหาผู้ใช้โดยอีเมล
+const findUserByEmail = async (email) => {
+  // ใช้ mongoose เพื่อค้นหาผู้ใช้ในฐานข้อมูล
+};
+
+// ฟังก์ชันสำหรับตรวจสอบรหัสผ่าน
+const isValidPassword = (user, password) => {
+  // เพิ่มตรรกะสำหรับการตรวจสอบรหัสผ่าน
+};
+
+// เส้นทางสำหรับการล็อกอิน
 app.post('/api/users/login', async (req, res) => {
   const { email, password } = req.body;
 
-  // Validate user credentials (this might involve checking a database)
-  const user = await findUserByEmail(email); // Fetch user by email
-  if (!user || !isValidPassword(user, password)) { // Implement your own validation logic
-      return res.status(401).json({ message: 'Invalid email or password.' });
+  const user = await findUserByEmail(email); 
+  if (!user || !isValidPassword(user, password)) {
+    return res.status(401).json({ message: 'Invalid email or password.' });
   }
 
-  // Assuming `user` has a `username` field
-  res.json({ username: user.username }); // Ensure this line returns the username
+  res.json({ username: user.username }); 
 });
 
+// เมื่อมีผู้ใช้เชื่อมต่อ
+io.on('connection', (socket) => {
+  console.log('A user connected');
+
+  socket.on('chat message', (msg) => {
+      io.emit('chat message', msg); 
+  });
+
+  socket.on('disconnect', () => {
+      console.log('A user disconnected');
+  });
+});
 
 // รันเซิร์ฟเวอร์
 const PORT = process.env.PORT || 5003;
-app.listen(PORT, () => {
+server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

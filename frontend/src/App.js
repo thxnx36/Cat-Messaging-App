@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import Home from './components/Home';
 import Login from './components/Login';
 import Register from './components/Register';
+import Chat from './components/Chat';
 import { GlobalStyles } from './components/GlobalStyles';
 import { message } from 'antd';
 
@@ -30,7 +31,6 @@ function App() {
     }
   };
   
-
   const handleLogout = () => {
     localStorage.removeItem('username');
     setIsLoggedIn(false);
@@ -45,7 +45,7 @@ function App() {
       <Routes>
         <Route 
           path="/" 
-          element={<Home isLoggedIn={isLoggedIn} username={username} onLogout={handleLogout} />} 
+          element={<Home onLogout={handleLogout} />} 
         />
         <Route 
           path="/login" 
@@ -54,6 +54,10 @@ function App() {
         <Route 
           path="/register" 
           element={isLoggedIn ? <Navigate to="/" replace /> : <Register />} 
+        />
+        <Route 
+          path="/chat" 
+          element={isLoggedIn ? <Chat username={username} onLogout={handleLogout} /> : <Navigate to="/login" />} 
         />
       </Routes>
     </Router>
