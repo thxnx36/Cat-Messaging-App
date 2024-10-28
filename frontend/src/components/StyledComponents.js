@@ -47,7 +47,7 @@ export const StyledComponents = {
   `,
     ContainerChat: styled.div`
     margin-top: 60px;
-    margin-left:60px;
+    margin-left: 60px;
     width: 400px; 
     height: 500px;
     padding: 10px;
@@ -55,13 +55,12 @@ export const StyledComponents = {
     padding-top: 20px;
     display: flex;
     flex-direction: column;
-    border: 1.5px solid #ccc;
-    border-radius: 8px;
+    background-image: url(${require('../assets/framechat2.png')}); /* เปลี่ยนเป็น path ของรูปกรอบ */
+    background-size: 100%; /* ปรับขนาดรูปให้เต็มพื้นที่ */
+    background-repeat: no-repeat; /* ไม่ให้รูปซ้ำ */
     overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     font-family: "Dosis", sans-serif;
-    background-color: #fff;
-  `,
+    `,
   HeaderChat: styled.header`
     display: flex;
     justify-content: space-between;
@@ -232,8 +231,8 @@ MessageItem: styled.div`
 `,
 SenderName: styled.div`
   font-weight: bold;
-  margin-right: ${({ isUserMessage }) => (isUserMessage ? '0' : '8px')};
-  margin-left: ${({ isUserMessage }) => (isUserMessage ? '8px' : '0')};
+  margin-right: ${({ isUserMessage }) => (isUserMessage ? '6px' : '8px')};
+  margin-left: ${({ isUserMessage }) => (isUserMessage ? '8px' : '6px')};
   color: #555;
 `,
 MessageText: styled.div`
@@ -247,27 +246,27 @@ MessageText: styled.div`
 MessageInput: styled.div`
   display: flex;
   padding: 10px;
-  border-top: 1px solid #ddd;
   margin-top: auto;
+  margin-bottom: 35px;
   width: 100%;
 `,
 ButtonSend: styled.button`
   color: #fff;
   padding: 5px;
-  background-color: #919191;
+  background-color: #2e2e2e;
   border-radius: 10px;
 
     &:hover {
       outline: none;
       color: #ffff;
       box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Optional shadow for emphasis */
-      background-color: #707070;
+      background-color: #1c1c1c;
     }
 `,
 MessageInputChat:styled.input`
     padding: 10px;
     font-family: "Dosis", sans-serif;
-    border: 1px solid #8a8a8a; /* Change this to your desired color */
+    border: 3px solid #1c1c1c; /* Change this to your desired color */
     border-radius: 15px;
     font-size: 16px;
     width: 350px;
