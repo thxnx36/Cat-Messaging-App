@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import styled from 'styled-components';
-import { Link, useNavigate } from 'react-router-dom'; // นำเข้า useNavigate
+import { useNavigate } from 'react-router-dom'; 
 import { Dropdown, message, Modal } from 'antd';
+import { StyledComponents } from './StyledComponents';
+import logoImage from '../assets/logomeowssage.png';
 
 const Home = ({ onLogout }) => {
   const [username, setUsername] = useState(null);
-  const navigate = useNavigate(); // ใช้ useNavigate
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
@@ -21,124 +22,75 @@ const Home = ({ onLogout }) => {
       okText: 'Yes',
       cancelText: 'No',
       onOk: () => {
-        // Show the success message first
         message.success('BYE BYE!');
-        
-        // Call onLogout after a short delay
         setTimeout(() => {
+          localStorage.removeItem('username'); // Clear username from localStorage
           onLogout();
-        }, 500); // Delay for half a second
+        }, 500);
+      },
+      wrapClassName: 'custom-modal',
+      okButtonProps: {
+        style: {
+          backgroundColor: '#6a94b1',
+          color: '#fff',
+        },
+      },
+      cancelButtonProps: {
+        style: {
+          backgroundColor: '#646464',
+          color: '#fff',
+        },
       },
     });
   };
 
   const menuItems = [
     {
+      key: 'profile',
+      label: 'Profile',
+    },
+    {
+      key: 'settings',
+      label: 'Settings',
+    },
+    {
       key: 'logout',
       label: 'Log out',
       onClick: handleLogout,
-    },
+    }
   ];
-
-  // ฟังก์ชันในการนำทางไปยังหน้าแชท
+  
   const handleChatClick = () => {
-    navigate('/chat'); // นำทางไปยังหน้าแชท
+    navigate('/chat');
   };
 
   return (
-    <Container>
-      <Header>
-        <Logo>MyApp</Logo>
-        <Nav>
-          {username ? ( // Show username if logged in
+    <StyledComponents.Container>
+      <StyledComponents.Header>
+        <StyledComponents.Logo src={logoImage} alt="Meowssage Logo" /> 
+        <StyledComponents.Nav>
+          {username ? (
             <Dropdown menu={{ items: menuItems }} trigger={['click']} placement="bottomRight">
               <span>
-                <Username aria-label="User menu">
+                <StyledComponents.Username aria-label="User menu">
                   {username} <span>☁</span>
-                </Username>
+                </StyledComponents.Username>
               </span>
             </Dropdown>
           ) : (
-            <StyledLink to="/login">Log in</StyledLink>
+            <StyledComponents.StyledLinkHome to="/login">Log in</StyledComponents.StyledLinkHome>
           )}
-        </Nav>
-      </Header>
-      <Content>
-        <h1>Welcome to the Chat Application</h1>
-        {username && ( // แสดงปุ่มเฉพาะเมื่อมีผู้ล็อกอิน
-          <StyledButton onClick={handleChatClick}>
+        </StyledComponents.Nav>
+      </StyledComponents.Header>
+      <StyledComponents.Content>
+        {username && (
+          <StyledComponents.StyledButton onClick={handleChatClick}>
             Go to Chat
-          </StyledButton>
+          </StyledComponents.StyledButton>
         )}
-      </Content>
-    </Container>
+      </StyledComponents.Content>
+    </StyledComponents.Container>
   );
 };
 
 export default Home;
-
-// Styled components remain unchanged
-
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-`;
-
-const Header = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 10px 20px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-`;
-
-const Logo = styled.div`
-  font-size: 24px;
-  font-weight: bold;
-`;
-
-const Nav = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-const StyledLink = styled(Link)`
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #0056b3;
-  }
-`;
-
-const Username = styled.span`
-  font-size: 16px;
-  cursor: pointer;
-`;
-
-const Content = styled.div`
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`;
-
-const StyledButton = styled.button`
-  padding: 10px 20px;
-  background-color: #28a745;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: #218838;
-  }
-`;

@@ -4,7 +4,7 @@ import Home from './components/Home';
 import Login from './components/Login';
 import Register from './components/Register';
 import Chat from './components/Chat';
-import { GlobalStyles } from './components/GlobalStyles';
+import { GlobalStyles } from './components/StyledComponents';
 import { message } from 'antd';
 
 function App() {
