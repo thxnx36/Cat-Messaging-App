@@ -25,7 +25,6 @@ function App() {
       setUsername(user);
       setIsLoggedIn(true);
       message.success('Login successful!');
-      console.log(user); // ตรวจสอบว่ามีค่า username ที่ถูกต้อง
     } else {
       console.error('User is undefined');
     }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom'; // นำเข้า useNavigate
-import { Dropdown, Menu, message, Modal } from 'antd';
+import { Dropdown, message, Modal } from 'antd';
 
 const Home = ({ onLogout }) => {
   const [username, setUsername] = useState(null);
@@ -32,13 +32,13 @@ const Home = ({ onLogout }) => {
     });
   };
 
-  const menu = (
-    <Menu>
-      <Menu.Item key="logout" onClick={handleLogout}>
-        Log out
-      </Menu.Item>
-    </Menu>
-  );
+  const menuItems = [
+    {
+      key: 'logout',
+      label: 'Log out',
+      onClick: handleLogout,
+    },
+  ];
 
   // ฟังก์ชันในการนำทางไปยังหน้าแชท
   const handleChatClick = () => {
@@ -51,7 +51,7 @@ const Home = ({ onLogout }) => {
         <Logo>MyApp</Logo>
         <Nav>
           {username ? ( // Show username if logged in
-            <Dropdown overlay={menu} trigger={['click']} placement="bottomRight">
+            <Dropdown menu={{ items: menuItems }} trigger={['click']} placement="bottomRight">
               <span>
                 <Username aria-label="User menu">
                   {username} <span>☁</span>
