@@ -12,7 +12,7 @@ export const GlobalStyles = createGlobalStyle`
     font-family: "Dosis", sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: #f9fafb;
+    background-color: #ffff;
   }
 
   code {
@@ -45,6 +45,32 @@ export const StyledComponents = {
     background-color: #383838; /* Optional: background color */
     font-family: "Dosis", sans-serif; // Keep this for consistency
   `,
+    ContainerChat: styled.div`
+    margin-top: 60px;
+    margin-left:60px;
+    width: 400px; 
+    height: 500px;
+    padding: 10px;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    display: flex;
+    flex-direction: column;
+    border: 1.5px solid #ccc;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    font-family: "Dosis", sans-serif;
+    background-color: #fff;
+  `,
+  HeaderChat: styled.header`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    position: relative;
+  `,
   Header: styled.header`
     display: flex;
     justify-content: space-between; /* Keep space between logo and username */
@@ -75,12 +101,13 @@ export const StyledComponents = {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
+    /* align-items: center; */
     font-family: "Dosis", sans-serif; /* Use Dosis in content */
   `,
   StyledButton: styled.button`
     padding: 10px 20px;
     background-color: #28a745;
+    width:100px;
     color: white;
     border: none;
     border-radius: 5px;
@@ -182,7 +209,7 @@ export const StyledComponents = {
     display: flex;
     flex-direction: column;
   `,
-  Input: styled.input`
+    Input: styled.input`
     padding: 10px;
     font-family: "Dosis", sans-serif;
     margin-bottom: 15px;
@@ -193,42 +220,64 @@ export const StyledComponents = {
     transition: border-color 0.3s ease; /* Smooth transition for border color */
     background-color: #ffff;
 
-    &:focus {
-      border-color: #000; /* Change border color to black on focus */
-      outline: none; /* Remove default outline */
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Optional shadow for emphasis */
-      background-color: #ebebeb;
-    }
-  `,
-  MessageInput: styled.div`
-    display: flex;
-    width: 100%;
-    margin-top: 10px;
-  `,
-  LogoutButton: styled.button` /* Using styled.button directly */
-    margin-bottom: 10px;
   `,
   MessageList: styled.div`
-  flex-grow: 1;
-  overflow-y: auto;
   padding: 10px;
 `,
 MessageItem: styled.div`
-  background-color: ${props => (props.isUserMessage ? '#dcf8c6' : '#ffffff')}; /* Green for user messages */
-  margin: 5px 0;
+  display: flex;
+  flex-direction: ${({ isUserMessage }) => (isUserMessage ? 'row-reverse' : 'row')};
+  margin-bottom: 10px;
+  align-items: flex-start;
+`,
+SenderName: styled.div`
+  font-weight: bold;
+  margin-right: ${({ isUserMessage }) => (isUserMessage ? '0' : '8px')};
+  margin-left: ${({ isUserMessage }) => (isUserMessage ? '8px' : '0')};
+  color: #555;
+`,
+MessageText: styled.div`
+  background-color: ${({ isUserMessage }) => (isUserMessage ? '#daf8cb' : '#f1f1f1')};
+  padding: 8px 12px;
+  border-radius: 15px;
+  max-width: 100%;
+  text-align: ${({ isUserMessage }) => (isUserMessage ? 'right' : 'left')};
+  color: #333;
+`,
+MessageInput: styled.div`
+  display: flex;
   padding: 10px;
+  border-top: 1px solid #ddd;
+  margin-top: auto;
+  width: 100%;
+`,
+ButtonSend: styled.button`
+  color: #fff;
+  padding: 5px;
+  background-color: #919191;
   border-radius: 10px;
-  align-self: ${props => (props.isUserMessage ? 'flex-end' : 'flex-start')}; /* Align based on sender */
-  position: relative; /* For positioning sender name */
+
+    &:hover {
+      outline: none;
+      color: #ffff;
+      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Optional shadow for emphasis */
+      background-color: #707070;
+    }
 `,
-MessageText: styled.span`
-  display: block;
-`,
-SenderName: styled.span`
-  font-size: 12px;
-  color: #888;
-  position: absolute;
-  bottom: -15px; /* Position the sender name */
-  left: 5px;
-`,
+MessageInputChat:styled.input`
+    padding: 10px;
+    font-family: "Dosis", sans-serif;
+    border: 1px solid #8a8a8a; /* Change this to your desired color */
+    border-radius: 15px;
+    font-size: 16px;
+    width: 350px;
+    transition: border-color 0.3s ease; /* Smooth transition for border color */
+    background-color: #ffff;
+
+    &:focus {
+        border-color: #000; /* Change border color to green on focus */
+        outline: none; /* Remove default outline */
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Optional shadow for emphasis */
+    }
+  `,
 };

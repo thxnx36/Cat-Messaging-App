@@ -2,26 +2,41 @@ import React, { useEffect, useState } from 'react';
 import { Input, Button, Dropdown, message, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { StyledComponents } from './StyledComponents';
+import io from 'socket.io-client';
 import logoImage from '../assets/logomeowssage.png';
+
+const socket = io('http://localhost:5003'); // URL ของเซิร์ฟเวอร์ของคุณ
 
 const Chat = ({ onLogout }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [username, setUsername] = useState(null);
   const navigate = useNavigate();
-   
+
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
     if (storedUsername) {
-      setUsername(storedUsername); // Retrieve username from localStorage
+      setUsername(storedUsername);
     }
   }, []);
+
+  useEffect(() => {
+    socket.on('chat message', (msg) => {
+      setMessages((prevMessages) => [...prevMessages, msg]);
+    });
+
+    return () => {
+      socket.off('chat message');
+    };
+  }, []);
+
   const handleLogoClick = () => {
-    navigate('/'); // เปลี่ยนเส้นทางไปยังหน้า Home
+    navigate('/'); // Navigate to Home
   };
+
   const handleSend = () => {
     if (newMessage.trim()) {
-      setMessages([...messages, { text: newMessage, sender: 'user' }]);
+      socket.emit('chat message', { username, text: newMessage });
       setNewMessage('');
     }
   };
@@ -35,22 +50,9 @@ const Chat = ({ onLogout }) => {
       onOk: () => {
         message.success('BYE BYE!');
         setTimeout(() => {
-          localStorage.removeItem('username'); // Clear username from localStorage
+          localStorage.removeItem('username');
           onLogout();
         }, 500);
-      },
-      wrapClassName: 'custom-modal',
-      okButtonProps: {
-        style: {
-          backgroundColor: '#6a94b1',
-          color: '#fff',
-        },
-      },
-      cancelButtonProps: {
-        style: {
-          backgroundColor: '#646464',
-          color: '#fff',
-        },
       },
     });
   };
@@ -68,22 +70,13 @@ const Chat = ({ onLogout }) => {
       key: 'logout',
       label: 'Log out',
       onClick: handleLogout,
-    }
+    },
   ];
 
-  useEffect(() => {
-    const storedMessages = JSON.parse(localStorage.getItem('messages')) || [];
-    setMessages(storedMessages);
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem('messages', JSON.stringify(messages));
-  }, [messages]);
-
   return (
-    <StyledComponents.Container>
-      <StyledComponents.Header>
-        <StyledComponents.Logo src={logoImage} alt="Meowssage Logo" onClick={handleLogoClick} /> 
+    <>
+      <StyledComponents.HeaderChat>
+        <StyledComponents.Logo src={logoImage} alt="Meowssage Logo" onClick={handleLogoClick} />
         <StyledComponents.Nav>
           {username ? (
             <Dropdown menu={{ items: menuItems }} trigger={['click']} placement="bottomRight">
@@ -97,35 +90,39 @@ const Chat = ({ onLogout }) => {
             <StyledComponents.StyledLinkHome to="/login">Log in</StyledComponents.StyledLinkHome>
           )}
         </StyledComponents.Nav>
-      </StyledComponents.Header>
-      <StyledComponents.Content>
-        <StyledComponents.MessageList>
-          {messages.map((item, index) => (
-            <StyledComponents.MessageItem
-              key={index}
-              isUserMessage={item.sender === 'user'}
-            >
-              <StyledComponents.MessageText>
-                {item.text}
-              </StyledComponents.MessageText>
-              <StyledComponents.SenderName>
-                {item.sender === 'user' ? 'You' : 'Other User'}
-              </StyledComponents.SenderName>
-            </StyledComponents.MessageItem>
-          ))}
-        </StyledComponents.MessageList>
-        <StyledComponents.MessageInput>
-          <Input
-            value={newMessage}
-            onChange={e => setNewMessage(e.target.value)}
-            onPressEnter={handleSend}
-            placeholder="Type your message..."
-            style={{ flexGrow: 1 }} // Makes the input flexible
-          />
-          <Button type="primary" onClick={handleSend}>Send</Button>
-        </StyledComponents.MessageInput>
-      </StyledComponents.Content>
-    </StyledComponents.Container>
+      </StyledComponents.HeaderChat>
+      <StyledComponents.ContainerChat>
+        <StyledComponents.Content>
+          <StyledComponents.MessageList>
+            {messages.map((item, index) => (
+              <StyledComponents.MessageItem
+                key={index}
+                isUserMessage={item.username === username}
+              >
+                <StyledComponents.SenderName isUserMessage={item.username === username}>
+                  {item.username === username ? 'You' : item.username}
+                </StyledComponents.SenderName>
+                <StyledComponents.MessageText isUserMessage={item.username === username}>
+                  {item.text}
+                </StyledComponents.MessageText>
+              </StyledComponents.MessageItem>
+            ))}
+          </StyledComponents.MessageList>
+          <StyledComponents.MessageInput>
+            <StyledComponents.MessageInputChat
+              value={newMessage}
+              onChange={(e) => setNewMessage(e.target.value)}
+              onPressEnter={handleSend}
+              placeholder="Type your message..."
+              style={{ flexGrow: 1, width: '80%', marginRight: '10px' }}
+            />
+            <StyledComponents.ButtonSend type="primary" onClick={handleSend} style={{ width: '15%' }}>
+              Send
+            </StyledComponents.ButtonSend>
+          </StyledComponents.MessageInput>
+        </StyledComponents.Content>
+      </StyledComponents.ContainerChat>
+    </>
   );
 };
 
