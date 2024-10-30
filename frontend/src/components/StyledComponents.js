@@ -256,13 +256,13 @@ MessageItem: styled.div`
   display: flex;
   flex-direction: ${({ isUserMessage }) => (isUserMessage ? 'row-reverse' : 'row')};
   margin-bottom: 10px;
-  margin-left: 0px;
+  margin-left: 10px;
   align-items: flex-start;
 `,
 SenderName: styled.div`
   font-weight: bold;
-  margin-right: ${({ isUserMessage }) => (isUserMessage ? '15px' : '10px')};
-  margin-left: ${({ isUserMessage }) => (isUserMessage ? '10px' : '15px')};
+  margin-right: ${({ isUserMessage }) => (isUserMessage ? '5px' : '10px')};
+  margin-left: ${({ isUserMessage }) => (isUserMessage ? '10px' : '5px')};
   color: #555;
 `,
 MessageText: styled.div`
