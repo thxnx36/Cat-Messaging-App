@@ -115,7 +115,8 @@ export const StyledComponents = {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: center;    align-items: center;      // Center vertically
+
     /* align-items: center; */
     font-family: "Dosis", sans-serif; /* Use Dosis in content */
   `,
@@ -245,6 +246,7 @@ export const StyledComponents = {
     padding: 10px;
     max-height: 330px; 
     margin-top:15px;
+    margin-left:-63px;
     width:320px;
     display: flex;
     flex-direction: column;
@@ -279,7 +281,7 @@ MessageInput: styled.div`
   padding: 10px;
   margin-top: auto;
   margin-bottom: 35px;
-  margin-left:9px;
+  margin-left:-55px;
   margin-bottom:22px;
   width: 80%;
 `,
