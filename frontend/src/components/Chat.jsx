@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Input, Button, Dropdown, message, Modal } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { StyledComponents } from './StyledComponents';
@@ -12,6 +12,7 @@ const Chat = ({ onLogout }) => {
   const [newMessage, setNewMessage] = useState('');
   const [username, setUsername] = useState(null);
   const navigate = useNavigate();
+  const messagesEndRef = useRef(null); // Ref for the message list
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
@@ -30,6 +31,11 @@ const Chat = ({ onLogout }) => {
     };
   }, []);
 
+  // Scroll to the bottom when messages change
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
+
   const handleLogoClick = () => {
     navigate('/'); // Navigate to Home
   };
@@ -38,6 +44,13 @@ const Chat = ({ onLogout }) => {
     if (newMessage.trim()) {
       socket.emit('chat message', { username, text: newMessage });
       setNewMessage('');
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault(); // ป้องกันไม่ให้เกิดการรีเฟรชหน้า
+      handleSend();
     }
   };
 
@@ -107,12 +120,13 @@ const Chat = ({ onLogout }) => {
                 </StyledComponents.MessageText>
               </StyledComponents.MessageItem>
             ))}
+            <div ref={messagesEndRef} /> {/* Reference for auto-scroll */}
           </StyledComponents.MessageList>
           <StyledComponents.MessageInput>
             <StyledComponents.MessageInputChat
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
-              onPressEnter={handleSend}
+              onKeyDown={handleKeyDown} // เปลี่ยนเป็น onKeyDown
               placeholder="Type your message..."
               style={{ flexGrow: 1, width: '80%', marginRight: '10px' }}
             />

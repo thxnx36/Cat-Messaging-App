@@ -26,6 +26,23 @@ export const GlobalStyles = createGlobalStyle`
       /* text-decoration: underline; */
     }
   }
+/* Scrollbar Styles */
+::-webkit-scrollbar {
+    width: 7px; /* Width of the scrollbar */
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #fff; /* Background of the scrollbar track */
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #888; /* Color of the scrollbar handle */
+    border-radius: 15px; /* Rounded corners */
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555; /* Color of the scrollbar handle on hover */
+  }
 `;
 
 export const StyledComponents = {
@@ -92,7 +109,6 @@ export const StyledComponents = {
     font-family: "Josefin Sans", sans-serif;
     font-size: 20px;
     cursor: pointer;
-    margin-left: 15px; 
     font-family: "Dosis", sans-serif; /* Use Dosis for username */
   `,
   Content: styled.div`
@@ -219,31 +235,42 @@ export const StyledComponents = {
     border-radius: 15px;
     font-size: 16px;
     width: 350px;
-    transition: border-color 0.3s ease; /* Smooth transition for border color */
+    transition: border-color 0.3s ease; 
     background-color: #ffff;
 
   `,
   MessageList: styled.div`
-  padding: 10px;
-`,
+    flex-grow: 1;
+    overflow-y: auto; 
+    padding: 10px;
+    max-height: 330px; 
+    margin-top:15px;
+    width:320px;
+    display: flex;
+    flex-direction: column;
+    `,
+
 MessageItem: styled.div`
   display: flex;
   flex-direction: ${({ isUserMessage }) => (isUserMessage ? 'row-reverse' : 'row')};
   margin-bottom: 10px;
-  margin-left: -50px;
+  margin-left: 0px;
   align-items: flex-start;
 `,
 SenderName: styled.div`
   font-weight: bold;
-  margin-right: ${({ isUserMessage }) => (isUserMessage ? '60px' : '8px')};
-  margin-left: ${({ isUserMessage }) => (isUserMessage ? '8px' : '60px')};
+  margin-right: ${({ isUserMessage }) => (isUserMessage ? '15px' : '10px')};
+  margin-left: ${({ isUserMessage }) => (isUserMessage ? '10px' : '15px')};
   color: #555;
 `,
 MessageText: styled.div`
+  /* max-width: 50%; กำหนดขนาดสูงสุดของข้อความเพื่อไม่ให้ยาวเกิน */
+  word-wrap: break-word; /* ทำให้คำที่ยาวเกินไปตัดบรรทัด */
+  white-space: pre-wrap; /* ให้ตัดบรรทัดอัตโนมัติและเว้นว่างในข้อความ */
   background-color: ${({ isUserMessage }) => (isUserMessage ? '#daf8cb' : '#f1f1f1')};
   padding: 8px 12px;
   border-radius: 15px;
-  max-width: 100%;
+  max-width: 80%;
   text-align: ${({ isUserMessage }) => (isUserMessage ? 'right' : 'left')};
   color: #333;
 `,
