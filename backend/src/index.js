@@ -56,14 +56,14 @@ app.post('/api/users/login', async (req, res) => {
 
 // เมื่อมีผู้ใช้เชื่อมต่อ
 io.on('connection', (socket) => {
-  console.log('A user connected');
+  console.log('user connected');
 
   socket.on('chat message', (msg) => {
       io.emit('chat message', msg); 
   });
 
   socket.on('disconnect', () => {
-      console.log('A user disconnected');
+      console.log('user disconnected');
   });
 });
 

@@ -34,7 +34,7 @@ export const StyledComponents = {
     flex-direction: column;
     height: 100vh; /* Ensure container takes full viewport height */
     justify-content: flex-start; /* Align items at the start */
-    background-color: #f9fafb;
+    background-color: #fff;
     font-family: "Dosis", sans-serif; // Keep this for consistency
   `,
   ContainerLogin: styled.div`
@@ -55,8 +55,8 @@ export const StyledComponents = {
     padding-top: 20px;
     display: flex;
     flex-direction: column;
-    background-image: url(${require('../assets/framechat2.png')}); /* เปลี่ยนเป็น path ของรูปกรอบ */
-    background-size: 100%; /* ปรับขนาดรูปให้เต็มพื้นที่ */
+    background-image: url(${require('../assets/messagechat.png')}); /* เปลี่ยนเป็น path ของรูปกรอบ */
+    background-size: 90%; /* ปรับขนาดรูปให้เต็มพื้นที่ */
     background-repeat: no-repeat; /* ไม่ให้รูปซ้ำ */
     overflow: hidden;
     font-family: "Dosis", sans-serif;
@@ -104,18 +104,21 @@ export const StyledComponents = {
     font-family: "Dosis", sans-serif; /* Use Dosis in content */
   `,
   StyledButton: styled.button`
-    padding: 10px 20px;
-    background-color: #28a745;
-    width:100px;
+    /* padding: 10px 20px; */
+    width:200px;
     color: white;
+    align-items:center;
     border: none;
+    background-image: url(${require('../assets/buttonmessage.jpg')}); /* เปลี่ยนเป็น path ของรูปกรอบ */
+    background-size: 100%; /* ปรับขนาดรูปให้เต็มพื้นที่ */
+    background-repeat: no-repeat; /* ไม่ให้รูปซ้ำ */
+    overflow: hidden;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
     font-family: "Josefin Sans", sans-serif;
-
+    height:100px;
     &:hover {
-      background-color: #218838;
     }
   `,
   Button: styled.button`
@@ -227,12 +230,13 @@ MessageItem: styled.div`
   display: flex;
   flex-direction: ${({ isUserMessage }) => (isUserMessage ? 'row-reverse' : 'row')};
   margin-bottom: 10px;
+  margin-left: -50px;
   align-items: flex-start;
 `,
 SenderName: styled.div`
   font-weight: bold;
-  margin-right: ${({ isUserMessage }) => (isUserMessage ? '6px' : '8px')};
-  margin-left: ${({ isUserMessage }) => (isUserMessage ? '8px' : '6px')};
+  margin-right: ${({ isUserMessage }) => (isUserMessage ? '60px' : '8px')};
+  margin-left: ${({ isUserMessage }) => (isUserMessage ? '8px' : '60px')};
   color: #555;
 `,
 MessageText: styled.div`
@@ -248,35 +252,36 @@ MessageInput: styled.div`
   padding: 10px;
   margin-top: auto;
   margin-bottom: 35px;
-  width: 100%;
+  margin-left:9px;
+  margin-bottom:22px;
+  width: 80%;
 `,
 ButtonSend: styled.button`
   color: #fff;
-  padding: 5px;
-  background-color: #2e2e2e;
+  padding: 0px;
   border-radius: 10px;
+  padding-left: 25px;
 
     &:hover {
       outline: none;
       color: #ffff;
-      box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Optional shadow for emphasis */
-      background-color: #1c1c1c;
     }
 `,
 MessageInputChat:styled.input`
-    padding: 10px;
     font-family: "Dosis", sans-serif;
-    border: 3px solid #1c1c1c; /* Change this to your desired color */
+    /* border: 10px solid #1c1c1c; Change this to your desired color */
     border-radius: 15px;
     font-size: 16px;
-    width: 350px;
+    width: 60%;
     transition: border-color 0.3s ease; /* Smooth transition for border color */
-    background-color: #ffff;
-
+    margin-bottom: 0px;
+    height:40px;
+    margin-top: 5px;
+    padding-left:20px;
     &:focus {
         border-color: #000; /* Change border color to green on focus */
         outline: none; /* Remove default outline */
-        box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); /* Optional shadow for emphasis */
+        /* box-shadow: 0 0 5px rgba(0, 0, 0, 0.3); Optional shadow for emphasis */
     }
   `,
 };

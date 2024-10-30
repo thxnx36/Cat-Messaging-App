@@ -85,7 +85,6 @@ const Home = ({ onLogout }) => {
       <StyledComponents.Content>
         {username && (
           <StyledComponents.StyledButton onClick={handleChatClick}>
-            Go to Chat
           </StyledComponents.StyledButton>
         )}
       </StyledComponents.Content>
