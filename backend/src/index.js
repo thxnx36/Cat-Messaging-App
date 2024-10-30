@@ -54,16 +54,37 @@ app.post('/api/users/login', async (req, res) => {
   res.json({ username: user.username }); 
 });
 
-// เมื่อมีผู้ใช้เชื่อมต่อ
-io.on('connection', (socket) => {
-  console.log('user connected');
+// ประกาศตัวแปรสำหรับเก็บผู้ใช้ที่ล็อกอินเพียงครั้งเดียว
+const connectedUsers = new Set(); 
 
-  socket.on('chat message', (msg) => {
-      io.emit('chat message', msg); 
+io.on('connection', (socket) => {
+  console.log('User connected');
+
+  // เมื่อผู้ใช้ล็อกอิน
+  socket.on('login', (username) => {
+    connectedUsers.add(username);
+    socket.username = username; // เก็บชื่อผู้ใช้ใน socket
+    io.emit('user list', Array.from(connectedUsers)); // ส่งรายชื่อผู้ใช้ที่เชื่อมต่ออยู่
+    io.emit('user count', connectedUsers.size); // ส่งจำนวนผู้ใช้ที่ออนไลน์
+  });
+  
+  // เมื่อผู้ใช้ล็อกเอาต์
+  socket.on('logout', (username) => {
+    if (connectedUsers.has(username)) {
+      connectedUsers.delete(username);
+      io.emit('user list', Array.from(connectedUsers)); // ส่งรายชื่อผู้ใช้ที่เชื่อมต่ออยู่
+      io.emit('user count', connectedUsers.size); // ส่งจำนวนผู้ใช้ออนไลน์
+    }
   });
 
+  // เมื่อผู้ใช้ตัดการเชื่อมต่อ
   socket.on('disconnect', () => {
-      console.log('user disconnected');
+    console.log('User disconnected');
+    if (socket.username) { // ตรวจสอบว่ามีชื่อผู้ใช้ไหม
+      connectedUsers.delete(socket.username); // ลบชื่อผู้ใช้จาก Set
+      io.emit('user list', Array.from(connectedUsers)); // ส่งรายชื่อผู้ใช้ที่เชื่อมต่ออยู่
+      io.emit('user count', connectedUsers.size); // ส่งจำนวนผู้ใช้ออนไลน์
+    }
   });
 });
 

@@ -1,6 +1,18 @@
-import styled, { createGlobalStyle } from 'styled-components';
+import styled, { createGlobalStyle, keyframes } from 'styled-components';
 import { Link } from 'react-router-dom';
 import 'antd/dist/reset.css';
+
+const bounce = keyframes`
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-10px);
+  }
+  60% {
+    transform: translateY(-5px);
+  }
+`;
 
 // Global Styles
 export const GlobalStyles = createGlobalStyle`
@@ -84,7 +96,7 @@ export const StyledComponents = {
     align-items: center;
     padding: 10px 20px;
     background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 4px solid #404040; /* เปลี่ยนเส้นทึบที่นี่ */
     position: relative;
   `,
   Header: styled.header`
@@ -93,10 +105,23 @@ export const StyledComponents = {
     align-items: center;
     padding: 10px 20px;
     background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border-bottom: 4px solid #404040; /* เปลี่ยนเส้นทึบที่นี่ */
     font-family: "Dosis", sans-serif;
     position: relative; /* Ensure header's children can position themselves absolutely */
   `,
+  Footer: styled.footer`
+  background-color: #404040; /* สีพื้นหลังของ Footer */
+  padding: 20px; /* ช่องว่างภายใน */
+  text-align: center; /* จัดกลางข้อความ */
+  position: relative;
+  bottom: 0; /* แนบด้านล่าง */
+  width: 100%; /* ขนาดเต็ม */
+`,
+FooterText: styled.p`
+  color: #fff; /* สีของข้อความ */
+  margin: 0; /* ยกเลิก margin */
+  font-family: "Dosis", sans-serif; /* ฟอนต์สำหรับข้อความ */
+`,
   Logo: styled.img`
     width: 200px; /* Adjust logo size if necessary */
     height: auto;
@@ -121,23 +146,26 @@ export const StyledComponents = {
     font-family: "Dosis", sans-serif; /* Use Dosis in content */
   `,
   StyledButton: styled.button`
-    /* padding: 10px 20px; */
-    width:200px;
-    color: white;
-    align-items:center;
-    border: none;
-    background-image: url(${require('../assets/buttonmessage.jpg')}); /* เปลี่ยนเป็น path ของรูปกรอบ */
-    background-size: 100%; /* ปรับขนาดรูปให้เต็มพื้นที่ */
-    background-repeat: no-repeat; /* ไม่ให้รูปซ้ำ */
-    overflow: hidden;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    font-family: "Josefin Sans", sans-serif;
-    height:100px;
-    &:hover {
-    }
-  `,
+  width: 260px;
+  color: white;
+  border: none;
+  background-image: url(${require('../assets/buttonmessage.jpg')});
+  background-size: cover; /* Adjusted for better performance */
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease; /* Transition for scale */
+  height: 120px;
+  font-family: "Josefin Sans", sans-serif;
+
+  &:hover {
+    animation: ${bounce} 0.5s ease; /* Apply the bounce animation on hover */
+    transform: scale(1.00); /* Slightly enlarge on hover */
+  }
+
+  &:active {
+    transform: scale(0.95); /* Slightly shrink on active */
+  }
+`,
   Button: styled.button`
     width: 120px;
     background-color: #525252;
@@ -147,7 +175,7 @@ export const StyledComponents = {
     color: #fff;
     border-radius: 15px;
     font-weight: 800;
-    border: none; /* Remove default border */
+    border: none; 
     transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth transitions */
     font-size: 18px;
 

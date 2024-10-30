@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, message } from 'antd';
+import { message } from 'antd';
 import { StyledComponents } from './StyledComponents';
 import logo from '../assets/logomeowssage.png';
 

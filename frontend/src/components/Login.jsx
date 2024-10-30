@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Button, message } from 'antd';
+import { message } from 'antd';
 import { StyledComponents } from './StyledComponents';
 import logo from '../assets/logomeowssage.png';
 
@@ -53,7 +53,11 @@ const Login = ({ onLogin }) => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <StyledComponents.Button  type="primary" htmlType="submit" block>
+          <StyledComponents.Button 
+            type="primary" // ใช้ type แทน htmlType
+            // แก้ไขค่าของ block เป็น string ถ้าจำเป็น หรือเอาออกถ้าไม่ใช้
+            block="true" // ถ้า StyledComponents.Button ใช้ prop block ได้ ให้เปลี่ยนเป็น block={true} 
+          >
             Log in
           </StyledComponents.Button>
         </StyledComponents.Form>

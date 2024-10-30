@@ -3,9 +3,11 @@ import { useNavigate } from 'react-router-dom';
 import { Dropdown, message, Modal } from 'antd';
 import { StyledComponents } from './StyledComponents';
 import logoImage from '../assets/logomeowssage.png';
+import { io } from 'socket.io-client';
 
 const Home = ({ onLogout }) => {
   const [username, setUsername] = useState(null);
+  const [onlineUsersCount, setOnlineUsersCount] = useState(0);
   const navigate = useNavigate(); 
 
   useEffect(() => {
@@ -13,6 +15,23 @@ const Home = ({ onLogout }) => {
     if (storedUsername) {
       setUsername(storedUsername);
     }
+
+    const socket = io('http://localhost:5003');
+
+    if (storedUsername) {
+      socket.emit('login', storedUsername);
+    }
+
+    socket.on('user count', (count) => {
+      setOnlineUsersCount(count);
+    });
+
+    return () => {
+      if (storedUsername) {
+        socket.emit('logout', storedUsername);
+      }
+      socket.disconnect();
+    };
   }, []);
 
   const handleLogout = () => {
@@ -24,7 +43,7 @@ const Home = ({ onLogout }) => {
       onOk: () => {
         message.success('BYE BYE!');
         setTimeout(() => {
-          localStorage.removeItem('username'); // Clear username from localStorage
+          localStorage.removeItem('username');
           onLogout();
         }, 500);
       },
@@ -84,10 +103,19 @@ const Home = ({ onLogout }) => {
       </StyledComponents.Header>
       <StyledComponents.Content>
         {username && (
-          <StyledComponents.StyledButton onClick={handleChatClick}>
-          </StyledComponents.StyledButton>
+          <>
+            <StyledComponents.StyledButton onClick={handleChatClick}>
+              {/* ปุ่มสำหรับเข้าแชท */}
+            </StyledComponents.StyledButton>
+            <div>{onlineUsersCount} online cats</div>
+          </>
         )}
       </StyledComponents.Content>
+      <StyledComponents.Footer>
+        <StyledComponents.FooterText>
+          © 2024 Meowssage
+        </StyledComponents.FooterText>
+      </StyledComponents.Footer>
     </StyledComponents.Container>
   );
 };
