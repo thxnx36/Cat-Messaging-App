@@ -51,10 +51,12 @@ const Chat = ({ onLogout }) => {
 
   const handleSend = () => {
     if (newMessage.trim()) {
-      socket.emit('chat message', { username, text: newMessage, catColor, roomType });
-      setNewMessage('');
+      const messageData = { username, text: newMessage, catColor, roomType };
+      socket.emit('chat message', messageData); // ส่งข้อความไปยังเซิร์ฟเวอร์
+      setNewMessage(''); // ล้างฟิลด์ข้อความ
     }
   };
+  
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
@@ -94,7 +96,7 @@ const Chat = ({ onLogout }) => {
       onClick: handleLogout,
     },
   ];
-  
+
   return (
     <>
       <StyledComponents.HeaderChat>

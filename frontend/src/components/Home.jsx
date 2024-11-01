@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate, useLocation } from 'react-router-dom'; 
 import { Dropdown, message, Modal } from 'antd';
 import { StyledComponents } from './StyledComponents';
 import logoImage from '../assets/logomeowssage.png';
 import { io } from 'socket.io-client';
-import ChatModal from './ChatModal';  // นำเข้า ChatModal
+import ChatModal from './ChatModal';
 
 const Home = ({ onLogout }) => {
   const [username, setUsername] = useState(null);
   const [onlineUsersCount, setOnlineUsersCount] = useState(0);
-  const [isModalVisible, setIsModalVisible] = useState(false); // สถานะสำหรับ Modal
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const navigate = useNavigate(); 
+  const location = useLocation();
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
@@ -29,9 +30,7 @@ const Home = ({ onLogout }) => {
     });
 
     return () => {
-      if (storedUsername) {
-        socket.emit('logout', storedUsername);
-      }
+      // ไม่ส่งคำสั่ง logout เมื่อเปลี่ยนหน้า
       socket.disconnect();
     };
   }, []);
@@ -43,6 +42,10 @@ const Home = ({ onLogout }) => {
       okText: 'Yes',
       cancelText: 'No',
       onOk: () => {
+        if (username) {
+          const socket = io('http://localhost:5003');
+          socket.emit('logout', username); // ส่งคำสั่ง logout
+        }
         message.success('BYE BYE!');
         setTimeout(() => {
           localStorage.removeItem('username');
@@ -82,9 +85,8 @@ const Home = ({ onLogout }) => {
   ];
   
   const handleChatClick = () => {
-    setIsModalVisible(true); // เปิด modal เมื่อคลิกปุ่ม
+    setIsModalVisible(true);
   };
-
 
   return (
     <StyledComponents.Container>
@@ -120,11 +122,10 @@ const Home = ({ onLogout }) => {
         </StyledComponents.FooterText>
       </StyledComponents.Footer>
 
-      {/* เรียกใช้ ChatModal แทน Modal เดิม */}
       <ChatModal 
         isVisible={isModalVisible} 
         onClose={() => setIsModalVisible(false)} 
-        username={username}  // ส่ง username ให้กับ ChatModal
+        username={username}  
       />
     </StyledComponents.Container>
   );

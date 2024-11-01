@@ -86,6 +86,11 @@ io.on('connection', (socket) => {
       io.emit('user count', connectedUsers.size); // ส่งจำนวนผู้ใช้ออนไลน์
     }
   });
+
+  // ฟังก์ชันสำหรับการรับข้อความแชท
+  socket.on('chat message', (msg) => {
+    io.emit('chat message', msg); // ส่งข้อความไปยังทุกคนที่เชื่อมต่อ
+  });
 });
 
 // รันเซิร์ฟเวอร์
