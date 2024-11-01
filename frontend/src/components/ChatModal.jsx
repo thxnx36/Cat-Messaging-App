@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import 'tailwindcss/tailwind.css';
+import { ReactComponent as HeartIcon } from '../assets/heart.svg';
 
-// Title styled component
 const Title = styled.h2`
   font-size: 2rem;
   font-weight: bold;
@@ -10,21 +11,65 @@ const Title = styled.h2`
   margin-bottom: 30px;
 `;
 
-// CustomButton styled component
-const CustomButton = styled.button`
-  background-color: ${(props) => props.isSelected ? '#007BFF' : '#363636'};
-  color: white;
-  padding: 10px 15px; /* ปรับขนาด padding */
-  border-radius: 15px;
+const CustomButton = styled.button.attrs(({ isSelected, ...rest }) => ({
+  ...rest,
+  style: {
+    backgroundImage: `url(${rest.bgImage})`,
+  },
+}))`
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: transparent;
+  padding: 0;
   border: none;
   cursor: pointer;
-  transition: background-color 0.3s ease; /* เพิ่มการเปลี่ยนแปลงสีพื้นหลัง */
+  transition: background-color 0.3s ease;
+  width: 105px;
+  height: 43px;
+  max-width: 100%;
+  position: relative;
 
-  &:hover {
+  &::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50px;
+    height: 50px;
+    display: ${({ isSelected }) => (isSelected ? 'block' : 'none')};
+    z-index: 1;
   }
 `;
 
-// CloseButton styled component
+const CustomButton2 = styled.button.attrs(({ ...rest }) => ({
+  ...rest,
+  style: {
+    backgroundImage: `url(${rest.bgImage})`,
+  },
+}))`
+  background-size: cover;
+  background-repeat: no-repeat;
+  color: transparent;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 137px;
+  height: 54px;
+  max-width: 100%;
+`;
+
+const HeartOverlay = styled(HeartIcon)`
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 50px;
+  z-index: 2;
+`;
+
 const CloseButton = styled.button`
   position: absolute;
   margin-top: -25px;
@@ -36,17 +81,16 @@ const CloseButton = styled.button`
   color: #000;
 
   &:hover {
-    color: #900000; /* เปลี่ยนสีเมื่อ hover */
+    color: #900000;
   }
 `;
 
-// StyledModal styled component
 const StyledModal = styled.div`
   position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  background-color: #f0f0f0;
+  background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
@@ -59,7 +103,6 @@ const StyledModal = styled.div`
   }
 `;
 
-// Overlay styled component
 const Overlay = styled.div`
   position: fixed;
   top: 0;
@@ -71,22 +114,24 @@ const Overlay = styled.div`
 `;
 
 const ChatModal = ({ isVisible, onClose, username }) => {
+  const navigate = useNavigate();
   const [catColor, setCatColor] = useState('แมวดำขาว');
-  const [roomType, setRoomType] = useState('just me');
-  const [selectedColor, setSelectedColor] = useState(''); // State สำหรับสีที่เลือก
-  const [selectedRoomType, setSelectedRoomType] = useState(''); // State สำหรับประเภทห้องที่เลือก
+  const [selectedColor, setSelectedColor] = useState('');
+  const [selectedRoomType, setSelectedRoomType] = useState('');
 
   const handleColorChange = (color) => {
     setCatColor(color);
-    setSelectedColor(color); // บันทึกสีที่เลือก
+    setSelectedColor(color);
   };
 
   const handleRoomTypeChange = (type) => {
-    setRoomType(type);
-    setSelectedRoomType(type); // บันทึกประเภทห้องที่เลือก
+    setSelectedRoomType(type);
   };
 
-  // ตัวเลือกสีของแมว
+  const handleStartChat = () => {
+    navigate('/chat');
+  };
+
   const catColors = {
     แมวดำขาว: '#000000',
     แมวส้ม: '#FFA500',
@@ -95,7 +140,6 @@ const ChatModal = ({ isVisible, onClose, username }) => {
     แมวสามสี: '#ffffff',
   };
 
-  // URL ของภาพแมวตามสี
   const catImages = {
     แมวดำขาว: require('../assets/blackwhitecat.png'),
     แมวส้ม: require('../assets/orangecat.png'),
@@ -104,68 +148,88 @@ const ChatModal = ({ isVisible, onClose, username }) => {
     แมวสามสี: require('../assets/threecolorcat.png'),
   };
 
-  if (!isVisible) return null; // ไม่แสดง modal หาก isVisible เป็น false
+  const buttonCatImages = {
+    แมวดำขาว: require('../assets/cowcatbuttom.png'),
+    แมวส้ม: require('../assets/orangecatbuttom.png'),
+    แมวเห็ด: require('../assets/browncatbuttom.png'),
+    แมวเทาขาว: require('../assets/fishpaocatbuttom.png'),
+    แมวสามสี: require('../assets/threecolorcatbuttom.png'),
+  };
+
+  const buttonImages = {
+    'just me': require('../assets/alonecatbuttom.png'),
+    'with someone': require('../assets/withothercatbuttom.png'),
+    'party!': require('../assets/partycatbuttom.png'),
+  };
+
+  const startChatImage = require('../assets/startchatbuttom.png');
+  const titleImage = require('../assets/choosecolor.png');
+  const titleImage2 = require('../assets/chooseroom.png');
+
+  if (!isVisible) return null;
 
   return (
     <>
       <Overlay onClick={onClose} />
       <StyledModal>
-        {/* Close Button */}
         <CloseButton onClick={onClose}>&times;</CloseButton>
-        <div className="title">
-          <Title>Welcome, {username}!</Title>
-
-          {/* Color Selection */}
-          <div className="flex flex-col items-center">
-            <h3 className="text-lg mb-4" style={{ fontSize: '22px'}}>Choose your cat color:</h3>
-            <div className="flex space-x-2 mb-4">
-              {Object.keys(catColors).map((color) => (
-                <label key={color} className="cursor-pointer">
-                  <CustomButton
-                    isSelected={selectedColor === color} // เช็คว่าปุ่มถูกเลือกหรือไม่
-                    onClick={() => handleColorChange(color)} // เปลี่ยนสีเมื่อคลิก
-                  >
-                    {color.charAt(0).toUpperCase() + color.slice(1)}
-                  </CustomButton>
-                </label>
-              ))}
-            </div>
-            {/* Cat Image Preview */}
+        <Title>Welcome, {username}!</Title>
+        <div className="flex justify-center mb-4">
+          <img
+            src={titleImage}
+            alt="Choose your cat color"
+            style={{ maxWidth: '50%', marginBottom: '-5px' }}
+          />
+        </div>
+        <div className="flex flex-col items-center">
+          <div className="flex space-x-2 mb-4">
+            {Object.keys(catColors).map((color) => (
+              <label key={color} className="cursor-pointer">
+                <CustomButton
+                  isSelected={selectedColor === color}
+                  bgImage={buttonCatImages[color]}
+                  onClick={() => handleColorChange(color)}
+                >
+                  {selectedColor === color && <HeartOverlay />}
+                </CustomButton>
+              </label>
+            ))}
+          </div>
+          <img
+            src={catImages[catColor]}
+            alt={`${catColor} cat`}
+            style={{
+              maxHeight: '150px',
+              width: 'auto',
+              objectFit: 'contain',
+              marginTop: '15px',
+            }}
+          />
+        </div>
+        <div className="mt-6 text-center">
+          <div className="flex justify-center mb-4">
             <img
-              src={catImages[catColor]} // ใช้ URL ของภาพแมวตามสีที่เลือก
-              alt={`${catColor} cat`}
-              style={{
-                maxHeight: '150px',
-                width: 'auto',
-                objectFit: 'contain',
-                marginTop: '15px'
-              }}
+              src={titleImage2}
+              alt="Choose your room type"
+              style={{ maxWidth: '50%', marginBottom: '5px' }}
             />
           </div>
-
-          {/* Room Type Selection */}
-          <div className="mt-6 text-center">
-            <h3 className="text-lg mb-2" style={{ fontSize: '22px'}}>Choose chat room type:</h3>
-            <div className="flex justify-center space-x-4">
-              {['just me', 'with someone', 'party!'].map((type) => (
-                <label key={type} className="cursor-pointer">
-                  <CustomButton
-                    isSelected={selectedRoomType === type} // เช็คว่าปุ่มถูกเลือกหรือไม่
-                    onClick={() => handleRoomTypeChange(type)} // เปลี่ยนประเภทห้องเมื่อคลิก
-                  >
-                    {type.charAt(0).toUpperCase() + type.slice(1)}
-                  </CustomButton>
-                </label>
-              ))}
-            </div>
+          <div className="flex justify-center space-x-4">
+            {['just me', 'with someone', 'party!'].map((type) => (
+              <label key={type} className="cursor-pointer">
+                <CustomButton
+                  isSelected={selectedRoomType === type}
+                  bgImage={buttonImages[type]}
+                  onClick={() => handleRoomTypeChange(type)}
+                >
+                  {selectedRoomType === type && <HeartOverlay />}
+                </CustomButton>
+              </label>
+            ))}
           </div>
-
-          {/* Start Chat Button */}
-          <div className="text-center mt-6" style={{ fontSize: '22px', }}>
-            <CustomButton onClick={() => alert(`Starting chat in "${roomType}" mode with a ${catColor}`)}>
-              Start Chat!
-            </CustomButton>
-          </div>
+        </div>
+        <div className="text-center mt-6">
+          <CustomButton2 bgImage={startChatImage} onClick={handleStartChat} />
         </div>
       </StyledModal>
     </>

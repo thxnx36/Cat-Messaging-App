@@ -82,8 +82,9 @@ const Home = ({ onLogout }) => {
   ];
   
   const handleChatClick = () => {
-    navigate('/chat');
+    setIsModalVisible(true); // เปิด modal เมื่อคลิกปุ่ม
   };
+
 
   return (
     <StyledComponents.Container>
@@ -107,14 +108,8 @@ const Home = ({ onLogout }) => {
         {username && (
           <>
             <StyledComponents.StyledButton onClick={handleChatClick}>
-              {/* ปุ่มสำหรับเข้าแชท */}
+              {/* ปุ่มสำหรับเปิด Modal */}
             </StyledComponents.StyledButton>
-            <button 
-              onClick={() => setIsModalVisible(true)} 
-              className="px-4 py-2 bg-blue-500 text-white rounded-lg mt-4"
-            >
-              Open Chat Modal
-            </button>
             <div>{onlineUsersCount} online cats</div>
           </>
         )}
