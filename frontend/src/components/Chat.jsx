@@ -1,27 +1,35 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Dropdown, message, Modal } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { StyledComponents } from './StyledComponents';
 import io from 'socket.io-client';
 import logoImage from '../assets/logomeowssage.png';
 
-const socket = io('http://localhost:5003'); // URL ของเซิร์ฟเวอร์ของคุณ
+const socket = io('http://localhost:5003');
 
 const Chat = ({ onLogout }) => {
+  const location = useLocation();
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [username, setUsername] = useState(null);
-  const [catColor, setCatColor] = useState(null); // State for selected cat color
-  const [roomType, setRoomType] = useState(null); // State for selected room type
+  const [catColor, setCatColor] = useState(null);
+  const [roomType, setRoomType] = useState(null);
   const navigate = useNavigate();
-  const messagesEndRef = useRef(null); // Ref for the message list
+  const messagesEndRef = useRef(null);
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
     if (storedUsername) {
       setUsername(storedUsername);
     }
-  }, []);
+
+    // Receive values from location.state
+    if (location.state) {
+      const { selectedColor, selectedRoomType } = location.state;
+      setCatColor(selectedColor);
+      setRoomType(selectedRoomType);
+    }
+  }, [location.state]);
 
   useEffect(() => {
     socket.on('chat message', (msg) => {
@@ -33,16 +41,9 @@ const Chat = ({ onLogout }) => {
     };
   }, []);
 
-  // Scroll to the bottom when messages change
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
-  // Log selected cat color and room type
-  useEffect(() => {
-    console.log('Selected Cat Color:', catColor);
-    console.log('Selected Room Type:', roomType);
-  }, [catColor, roomType]);
 
   const handleLogoClick = () => {
     navigate('/'); // Navigate to Home
@@ -50,14 +51,14 @@ const Chat = ({ onLogout }) => {
 
   const handleSend = () => {
     if (newMessage.trim()) {
-      socket.emit('chat message', { username, text: newMessage });
+      socket.emit('chat message', { username, text: newMessage, catColor, roomType });
       setNewMessage('');
     }
   };
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
-      e.preventDefault(); // ป้องกันไม่ให้เกิดการรีเฟรชหน้า
+      e.preventDefault();
       handleSend();
     }
   };
@@ -93,7 +94,7 @@ const Chat = ({ onLogout }) => {
       onClick: handleLogout,
     },
   ];
-
+  
   return (
     <>
       <StyledComponents.HeaderChat>
@@ -128,13 +129,13 @@ const Chat = ({ onLogout }) => {
                 </StyledComponents.MessageText>
               </StyledComponents.MessageItem>
             ))}
-            <div ref={messagesEndRef} /> {/* Reference for auto-scroll */}
+            <div ref={messagesEndRef} />
           </StyledComponents.MessageList>
           <StyledComponents.MessageInput>
             <StyledComponents.MessageInputChat
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
-              onKeyDown={handleKeyDown} // เปลี่ยนเป็น onKeyDown
+              onKeyDown={handleKeyDown}
               placeholder="Type your message..."
               style={{ flexGrow: 1, width: '80%', marginRight: '10px' }}
             />

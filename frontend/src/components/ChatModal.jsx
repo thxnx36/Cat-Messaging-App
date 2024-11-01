@@ -116,7 +116,7 @@ const Overlay = styled.div`
 
 const ChatModal = ({ isVisible, onClose, username }) => {
   const navigate = useNavigate();
-  const [catColor, setCatColor] = useState('แมวดำขาว');
+  const [catColor, setCatColor] = useState('แมววัว');
   const [selectedColor, setSelectedColor] = useState('');
   const [selectedRoomType, setSelectedRoomType] = useState('');
 
@@ -134,47 +134,40 @@ const ChatModal = ({ isVisible, onClose, username }) => {
       Swal.fire({
         title: 'อย่าลืม!',
         text: 'เลือกสีแมวและประเภทห้อง',
-        width: '280',
-        customClass: {
-          title: 'alert-title',
-          content: 'alert-content',
-          confirmButton: 'confirm-button',
-          popup: 'alert-popup', // Class for the popup
-        },
         confirmButtonText: 'ตกลง',
-        confirmButtonColor: '#5e3a3a', // เปลี่ยนสีปุ่มยืนยัน
+        confirmButtonColor: '#5e3a3a',
       });
       return; 
     }
-  
-    // หากมีการเลือกสีและประเภทห้องแล้ว
+
     console.log(`สีที่เลือก: ${selectedColor}, ประเภทห้อง: ${selectedRoomType}`);
-    navigate('/chat', { state: { selectedColor, selectedRoomType } }); // ส่งค่าต่าง ๆ ไปยังห้องแชท
-  };
+    navigate('/chat', { state: { selectedColor, selectedRoomType } }); // Correctly navigate with state
+};
+
   
   
 
   const catColors = {
-    แมวดำขาว: '#000000',
+    แมววัว: '#000000',
     แมวส้ม: '#FFA500',
     แมวเห็ด: '#756247',
-    แมวเทาขาว: '#808080',
+    แมวปลาเผา: '#808080',
     แมวสามสี: '#ffffff',
   };
 
   const catImages = {
-    แมวดำขาว: require('../assets/blackwhitecat.png'),
+    แมววัว: require('../assets/blackwhitecat.png'),
     แมวส้ม: require('../assets/orangecat.png'),
     แมวเห็ด: require('../assets/browncat.png'),
-    แมวเทาขาว: require('../assets/greywhitecat.png'),
+    แมวปลาเผา: require('../assets/greywhitecat.png'),
     แมวสามสี: require('../assets/threecolorcat.png'),
   };
 
   const buttonCatImages = {
-    แมวดำขาว: require('../assets/cowcatbuttom.png'),
+    แมววัว: require('../assets/cowcatbuttom.png'),
     แมวส้ม: require('../assets/orangecatbuttom.png'),
     แมวเห็ด: require('../assets/browncatbuttom.png'),
-    แมวเทาขาว: require('../assets/fishpaocatbuttom.png'),
+    แมวปลาเผา: require('../assets/fishpaocatbuttom.png'),
     แมวสามสี: require('../assets/threecolorcatbuttom.png'),
   };
 
