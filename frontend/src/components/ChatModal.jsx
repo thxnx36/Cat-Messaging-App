@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import 'tailwindcss/tailwind.css';
 import { ReactComponent as HeartIcon } from '../assets/heart.svg';
+import Swal from 'sweetalert2';
 
 const Title = styled.h2`
   font-size: 2rem;
@@ -129,8 +130,29 @@ const ChatModal = ({ isVisible, onClose, username }) => {
   };
 
   const handleStartChat = () => {
-    navigate('/chat');
+    if (!selectedColor || !selectedRoomType) {
+      Swal.fire({
+        title: 'อย่าลืม!',
+        text: 'เลือกสีแมวและประเภทห้อง',
+        width: '280',
+        customClass: {
+          title: 'alert-title',
+          content: 'alert-content',
+          confirmButton: 'confirm-button',
+          popup: 'alert-popup', // Class for the popup
+        },
+        confirmButtonText: 'ตกลง',
+        confirmButtonColor: '#5e3a3a', // เปลี่ยนสีปุ่มยืนยัน
+      });
+      return; 
+    }
+  
+    // หากมีการเลือกสีและประเภทห้องแล้ว
+    console.log(`สีที่เลือก: ${selectedColor}, ประเภทห้อง: ${selectedRoomType}`);
+    navigate('/chat', { state: { selectedColor, selectedRoomType } }); // ส่งค่าต่าง ๆ ไปยังห้องแชท
   };
+  
+  
 
   const catColors = {
     แมวดำขาว: '#000000',

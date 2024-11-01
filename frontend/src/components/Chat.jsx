@@ -11,6 +11,8 @@ const Chat = ({ onLogout }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [username, setUsername] = useState(null);
+  const [catColor, setCatColor] = useState(null); // State for selected cat color
+  const [roomType, setRoomType] = useState(null); // State for selected room type
   const navigate = useNavigate();
   const messagesEndRef = useRef(null); // Ref for the message list
 
@@ -35,6 +37,12 @@ const Chat = ({ onLogout }) => {
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
+
+  // Log selected cat color and room type
+  useEffect(() => {
+    console.log('Selected Cat Color:', catColor);
+    console.log('Selected Room Type:', roomType);
+  }, [catColor, roomType]);
 
   const handleLogoClick = () => {
     navigate('/'); // Navigate to Home
