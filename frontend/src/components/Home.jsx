@@ -4,10 +4,12 @@ import { Dropdown, message, Modal } from 'antd';
 import { StyledComponents } from './StyledComponents';
 import logoImage from '../assets/logomeowssage.png';
 import { io } from 'socket.io-client';
+import ChatModal from './ChatModal';  // นำเข้า ChatModal
 
 const Home = ({ onLogout }) => {
   const [username, setUsername] = useState(null);
   const [onlineUsersCount, setOnlineUsersCount] = useState(0);
+  const [isModalVisible, setIsModalVisible] = useState(false); // สถานะสำหรับ Modal
   const navigate = useNavigate(); 
 
   useEffect(() => {
@@ -107,6 +109,12 @@ const Home = ({ onLogout }) => {
             <StyledComponents.StyledButton onClick={handleChatClick}>
               {/* ปุ่มสำหรับเข้าแชท */}
             </StyledComponents.StyledButton>
+            <button 
+              onClick={() => setIsModalVisible(true)} 
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg mt-4"
+            >
+              Open Chat Modal
+            </button>
             <div>{onlineUsersCount} online cats</div>
           </>
         )}
@@ -116,6 +124,13 @@ const Home = ({ onLogout }) => {
           © 2024 Meowssage
         </StyledComponents.FooterText>
       </StyledComponents.Footer>
+
+      {/* เรียกใช้ ChatModal แทน Modal เดิม */}
+      <ChatModal 
+        isVisible={isModalVisible} 
+        onClose={() => setIsModalVisible(false)} 
+        username={username}  // ส่ง username ให้กับ ChatModal
+      />
     </StyledComponents.Container>
   );
 };
