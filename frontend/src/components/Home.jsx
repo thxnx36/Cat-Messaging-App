@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom'; 
 import { Dropdown, message, Modal } from 'antd';
 import { StyledComponents } from './StyledComponents';
-import logoImage from '../assets/logomeowssage.png';
+import logoImage from '../assets/meowssagelogo.png';
 import { io } from 'socket.io-client';
 import ChatModal from './ChatModal';
 
@@ -118,7 +118,7 @@ const Home = ({ onLogout }) => {
       </StyledComponents.Content>
       <StyledComponents.Footer>
         <StyledComponents.FooterText>
-          © 2024 Meowssage
+          Meowssage
         </StyledComponents.FooterText>
       </StyledComponents.Footer>
 

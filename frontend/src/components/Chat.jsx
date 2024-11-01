@@ -3,7 +3,7 @@ import { Dropdown, message, Modal } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { StyledComponents } from './StyledComponents';
 import io from 'socket.io-client';
-import logoImage from '../assets/logomeowssage.png';
+import logoImage from '../assets/meowssagelogowhite.png';
 
 const socket = io('http://localhost:5003');
 

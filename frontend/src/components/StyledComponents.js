@@ -63,7 +63,7 @@ export const StyledComponents = {
     flex-direction: column;
     height: 100vh; /* Ensure container takes full viewport height */
     justify-content: flex-start; /* Align items at the start */
-    background-color: #fff;
+    background-color: #fefaf4;
     font-family: "Dosis", sans-serif; // Keep this for consistency
   `,
   ContainerLogin: styled.div`
@@ -95,7 +95,7 @@ export const StyledComponents = {
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #fff;
+    background-color: #ffff;
     border-bottom: 4px solid #404040; /* เปลี่ยนเส้นทึบที่นี่ */
     position: relative;
   `,
@@ -104,7 +104,7 @@ export const StyledComponents = {
     justify-content: space-between; /* Keep space between logo and username */
     align-items: center;
     padding: 10px 20px;
-    background-color: #fff;
+    background-color: #fefaf4;
     border-bottom: 4px solid #404040; /* เปลี่ยนเส้นทึบที่นี่ */
     font-family: "Dosis", sans-serif;
     position: relative; /* Ensure header's children can position themselves absolutely */
@@ -146,10 +146,10 @@ FooterText: styled.p`
     font-family: "Dosis", sans-serif; /* Use Dosis in content */
   `,
   StyledButton: styled.button`
-  width: 260px;
+  width: 300px;
   color: white;
   border: none;
-  background-image: url(${require('../assets/buttonmessage.jpg')});
+  background-image: url(${require('../assets/meowtalk.png')});
   background-size: cover; /* Adjusted for better performance */
   border-radius: 5px;
   cursor: pointer;

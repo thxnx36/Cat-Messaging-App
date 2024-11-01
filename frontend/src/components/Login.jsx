@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { message } from 'antd';
 import { StyledComponents } from './StyledComponents';
-import logo from '../assets/logomeowssage.png';
+import logo from '../assets/meowssagelogowhite.png';
 
 const Login = ({ onLogin }) => {
   const [email, setEmail] = useState('');
