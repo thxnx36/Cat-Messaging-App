@@ -6,10 +6,13 @@ import { ReactComponent as HeartIcon } from '../assets/heart.svg';
 import Swal from 'sweetalert2';
 
 const Title = styled.h2`
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: bold;
   text-align: center;
   margin-bottom: 30px;
+
+  @media (min-width: 768px) {
+  }
 `;
 
 const CustomButton = styled.button.attrs(({ isSelected, ...rest }) => ({
@@ -30,6 +33,10 @@ const CustomButton = styled.button.attrs(({ isSelected, ...rest }) => ({
   max-width: 100%;
   position: relative;
 
+  @media (max-width: 768px) {
+    width: 90px;  /* ลดขนาดปุ่ม */
+    height: 36px; /* ลดขนาดปุ่ม */
+  }
   &::after {
     content: '';
     position: absolute;
@@ -59,6 +66,11 @@ const CustomButton2 = styled.button.attrs(({ ...rest }) => ({
   width: 137px;
   height: 54px;
   max-width: 100%;
+
+  @media (max-width: 768px) {
+    width: 100px;  /* ลดขนาดปุ่ม */
+    height: 40px; /* ลดขนาดปุ่ม */
+  }
 `;
 
 const HeartOverlay = styled(HeartIcon)`
@@ -114,6 +126,13 @@ const Overlay = styled.div`
   z-index: 999;
 `;
 
+const CustomButtonWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+`;
+
 const ChatModal = ({ isVisible, onClose, username }) => {
   const navigate = useNavigate();
   const [catColor, setCatColor] = useState('แมววัว');
@@ -141,11 +160,8 @@ const ChatModal = ({ isVisible, onClose, username }) => {
     }
 
     console.log(`สีที่เลือก: ${selectedColor}, ประเภทห้อง: ${selectedRoomType}`);
-    navigate('/chat', { state: { selectedColor, selectedRoomType } }); // Correctly navigate with state
-};
-
-  
-  
+    navigate('/chat', { state: { selectedColor, selectedRoomType } });
+  };
 
   const catColors = {
     แมววัว: '#000000',
@@ -193,12 +209,13 @@ const ChatModal = ({ isVisible, onClose, username }) => {
           <img
             src={titleImage}
             alt="Choose your cat color"
-            style={{ maxWidth: '50%', marginBottom: '-5px' }}
+            style={{ maxWidth: '50%', marginBottom: '-5px',marginTop: '-25px' }}
           />
         </div>
         <div className="flex flex-col items-center">
-          <div className="flex space-x-2 mb-4">
-            {Object.keys(catColors).map((color) => (
+        <CustomButtonWrapper>
+        <div className="flex flex-wrap space-x-1 mb-4 justify-center">
+        {Object.keys(catColors).map((color) => (
               <label key={color} className="cursor-pointer">
                 <CustomButton
                   isSelected={selectedColor === color}
@@ -210,11 +227,13 @@ const ChatModal = ({ isVisible, onClose, username }) => {
               </label>
             ))}
           </div>
+          </CustomButtonWrapper>
           <img
             src={catImages[catColor]}
             alt={`${catColor} cat`}
+            className="catImage"
             style={{
-              maxHeight: '150px',
+              maxHeight: '120px',
               width: 'auto',
               objectFit: 'contain',
               marginTop: '15px',
@@ -229,7 +248,7 @@ const ChatModal = ({ isVisible, onClose, username }) => {
               style={{ maxWidth: '50%', marginBottom: '5px' }}
             />
           </div>
-          <div className="flex justify-center space-x-4">
+          <CustomButtonWrapper>
             {['just me', 'with someone', 'party!'].map((type) => (
               <label key={type} className="cursor-pointer">
                 <CustomButton
@@ -241,7 +260,7 @@ const ChatModal = ({ isVisible, onClose, username }) => {
                 </CustomButton>
               </label>
             ))}
-          </div>
+          </CustomButtonWrapper>
         </div>
         <div className="text-center mt-6">
           <CustomButton2 bgImage={startChatImage} onClick={handleStartChat} />
