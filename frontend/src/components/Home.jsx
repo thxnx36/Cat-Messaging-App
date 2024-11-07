@@ -180,37 +180,53 @@ const Home = ({ onLogout }) => {
         </>
       )}
     </StyledComponents.Content>
-      <GifAnimation />
+    <GifAnimation />
+    {isMobile ? (
+      <>
+        <div style={{ 
+          position: 'absolute', 
+          bottom: '40px', 
+          right: '-25px', 
+          width: '145px',
+          height: '145px',
+          backgroundImage: `url(${boxImage})`,
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          zIndex: 10,
+        }} />
+      </>
+    ) : (
+      <>
+        <div style={{ 
+          position: 'absolute', 
+          bottom: '20px', 
+          right: '20px', 
+          width: '220px',
+          height: '220px',
+          backgroundImage: `url(${boxImage})`,
+          backgroundSize: 'contain',
+          backgroundRepeat: 'no-repeat',
+          zIndex: 10,
+        }} />
+        <GifAnimation />
+      </>
+    )}
+    <StyledComponents.Footer style={{ position: 'relative', zIndex: 5 }}>
+      <StyledComponents.FooterText>
+        Meowssage
+      </StyledComponents.FooterText>
+    </StyledComponents.Footer>
 
-      <div style={{ 
-        position: 'absolute', 
-        bottom: '20px', 
-        right: '20px', 
-        width: '220px',
-        height: '220px',
-        backgroundImage: `url(${boxImage})`,
-        backgroundSize: 'contain',
-        backgroundRepeat: 'no-repeat',
-        zIndex: 10,
-      }} />
-      
-      <StyledComponents.Footer style={{ position: 'relative', zIndex: 5 }}>
-        <StyledComponents.FooterText>
-          Meowssage
-        </StyledComponents.FooterText>
-      </StyledComponents.Footer>
-
-      <ChatModal 
-        isVisible={isModalVisible} 
-        onClose={() => setIsModalVisible(false)} 
-        username={username}  
-      />
-      <CatPersonalityModal 
-        isVisible={isCatPersonalityModalVisible} 
-        onClose={() => setIsCatPersonalityModalVisible(false)} 
-      />
-    </StyledComponents.Container>
-  );
-};
-
+    <ChatModal 
+      isVisible={isModalVisible} 
+      onClose={() => setIsModalVisible(false)} 
+      username={username}  
+    />
+    <CatPersonalityModal 
+      isVisible={isCatPersonalityModalVisible} 
+      onClose={() => setIsCatPersonalityModalVisible(false)} 
+    />
+        </StyledComponents.Container>
+      );
+    };
 export default Home;
