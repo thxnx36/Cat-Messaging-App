@@ -110,6 +110,7 @@ export const StyledComponents = {
     position: relative; /* Ensure header's children can position themselves absolutely */
   `,
   Footer: styled.footer`
+  overflow: hidden; // ซ่อนส่วนที่หลุดออกจากขอบ
   background-color: #404040; /* สีพื้นหลังของ Footer */
   padding: 20px; /* ช่องว่างภายใน */
   text-align: center; /* จัดกลางข้อความ */
@@ -155,6 +156,54 @@ FooterText: styled.p`
   cursor: pointer;
   transition: transform 0.2s ease; /* Transition for scale */
   height: 120px;
+  font-family: "Josefin Sans", sans-serif;
+
+  &:hover {
+    animation: ${bounce} 0.5s ease; /* Apply the bounce animation on hover */
+    transform: scale(1.00); /* Slightly enlarge on hover */
+  }
+
+  &:active {
+    transform: scale(0.95); /* Slightly shrink on active */
+  }
+`,
+StyledButton1: styled.button`
+  width: 180px;
+  height: 80px;
+  margin-top:50px;
+  margin-left:50px;
+  margin-right:50px;
+  color: white;
+  border: none;
+  background-image: url(${require('../assets/whatcatyoubebuttom.png')});
+  background-size: cover; /* Adjusted for better performance */
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease; /* Transition for scale */
+  font-family: "Josefin Sans", sans-serif;
+
+  &:hover {
+    animation: ${bounce} 0.5s ease; /* Apply the bounce animation on hover */
+    transform: scale(1.00); /* Slightly enlarge on hover */
+  }
+
+  &:active {
+    transform: scale(0.95); /* Slightly shrink on active */
+  }
+`,
+StyledButton2: styled.button`
+  width: 240px;
+  height: 80px;
+  margin-top:50px;
+  margin-left:50px;
+  margin-right:50px;
+  color: white;
+  border: none;
+  background-image: url(${require('../assets/whatcatbuttom.png')});
+  background-size: cover; /* Adjusted for better performance */
+  border-radius: 5px;
+  cursor: pointer;
+  transition: transform 0.2s ease; /* Transition for scale */
   font-family: "Josefin Sans", sans-serif;
 
   &:hover {

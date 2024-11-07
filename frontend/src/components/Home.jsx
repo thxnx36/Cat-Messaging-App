@@ -5,11 +5,15 @@ import { StyledComponents } from './StyledComponents';
 import logoImage from '../assets/meowssagelogo.png';
 import { io } from 'socket.io-client';
 import ChatModal from './ChatModal';
+import GifAnimation from './GifAnimation';
+import boxImage from '../assets/catbox.png';
+import CatPersonalityModal from './CatPersonalityModal'; // นำเข้า CatPersonalityModal
 
 const Home = ({ onLogout }) => {
   const [username, setUsername] = useState(null);
   const [onlineUsersCount, setOnlineUsersCount] = useState(0);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isCatPersonalityModalVisible, setIsCatPersonalityModalVisible] = useState(false); // สถานะสำหรับ CatPersonalityModal
   const navigate = useNavigate(); 
   const location = useLocation();
 
@@ -30,7 +34,6 @@ const Home = ({ onLogout }) => {
     });
 
     return () => {
-      // ไม่ส่งคำสั่ง logout เมื่อเปลี่ยนหน้า
       socket.disconnect();
     };
   }, []);
@@ -44,7 +47,7 @@ const Home = ({ onLogout }) => {
       onOk: () => {
         if (username) {
           const socket = io('http://localhost:5003');
-          socket.emit('logout', username); // ส่งคำสั่ง logout
+          socket.emit('logout', username);
         }
         message.success('BYE BYE!');
         setTimeout(() => {
@@ -88,8 +91,16 @@ const Home = ({ onLogout }) => {
     setIsModalVisible(true);
   };
 
+  const handleNewButtonClick1 = () => {
+    console.log("Button 1 clicked!");
+  };
+
+  const handleNewButtonClick2 = () => {
+    setIsCatPersonalityModalVisible(true); // เปิด CatPersonalityModal
+  };
+
   return (
-    <StyledComponents.Container>
+    <StyledComponents.Container style={{ overflow: 'hidden', position: 'relative' }}>
       <StyledComponents.Header>
         <StyledComponents.Logo src={logoImage} alt="Meowssage Logo" /> 
         <StyledComponents.Nav>
@@ -106,17 +117,48 @@ const Home = ({ onLogout }) => {
           )}
         </StyledComponents.Nav>
       </StyledComponents.Header>
-      <StyledComponents.Content>
+      <StyledComponents.Content style={{ position: 'relative' }}>
         {username && (
           <>
             <StyledComponents.StyledButton onClick={handleChatClick}>
-              {/* ปุ่มสำหรับเปิด Modal */}
+              {/* ปุ่มสำหรับเปิด Modal หลัก */}
             </StyledComponents.StyledButton>
+            <div style={{ 
+              position: 'absolute', 
+              top: '20px', 
+              left: '0', 
+              right: '0', 
+              display: 'flex',
+              justifyContent: 'space-between',
+              padding: '0 20px',
+            }}>
+              <StyledComponents.StyledButton1 onClick={handleNewButtonClick1}>
+                {/* ปุ่มสำหรับเปิด Modal แบบทดสอบ */}
+              </StyledComponents.StyledButton1>
+              <StyledComponents.StyledButton2 onClick={handleNewButtonClick2}>
+                {/* ปุ่มสำหรับเปิด Modal นิสัยแมว */}
+              </StyledComponents.StyledButton2>
+            </div>
+
             <div>{onlineUsersCount} online cats</div>
           </>
         )}
       </StyledComponents.Content>
-      <StyledComponents.Footer>
+      <GifAnimation />
+
+      <div style={{ 
+        position: 'absolute', 
+        bottom: '20px', 
+        right: '20px', 
+        width: '220px',
+        height: '220px',
+        backgroundImage: `url(${boxImage})`,
+        backgroundSize: 'contain',
+        backgroundRepeat: 'no-repeat',
+        zIndex: 10,
+      }} />
+      
+      <StyledComponents.Footer style={{ position: 'relative', zIndex: 5 }}>
         <StyledComponents.FooterText>
           Meowssage
         </StyledComponents.FooterText>
@@ -126,6 +168,10 @@ const Home = ({ onLogout }) => {
         isVisible={isModalVisible} 
         onClose={() => setIsModalVisible(false)} 
         username={username}  
+      />
+      <CatPersonalityModal 
+        isVisible={isCatPersonalityModalVisible} 
+        onClose={() => setIsCatPersonalityModalVisible(false)} 
       />
     </StyledComponents.Container>
   );
