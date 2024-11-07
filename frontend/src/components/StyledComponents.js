@@ -65,6 +65,7 @@ export const StyledComponents = {
     justify-content: flex-start; /* Align items at the start */
     background-color: #fefaf4;
     font-family: "Dosis", sans-serif; // Keep this for consistency
+
   `,
   ContainerLogin: styled.div`
     display: flex;
@@ -142,9 +143,17 @@ FooterText: styled.p`
     display: flex;
     flex-direction: column;
     justify-content: center;    align-items: center;      // Center vertically
-
-    /* align-items: center; */
     font-family: "Dosis", sans-serif; /* Use Dosis in content */
+
+    @media (max-width: 768px) {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center; /* จัดตำแหน่งให้อยู่ตรงกลางในแนวตั้ง */
+      align-items: center;     /* จัดตำแหน่งให้อยู่ตรงกลางในแนวนอน */
+
+    }
+
   `,
   StyledButton: styled.button`
   width: 300px;
@@ -158,6 +167,11 @@ FooterText: styled.p`
   height: 120px;
   font-family: "Josefin Sans", sans-serif;
 
+  @media (max-width: 768px) {
+      width: 200px;
+      height: 80px;
+
+    }
   &:hover {
     animation: ${bounce} 0.5s ease; /* Apply the bounce animation on hover */
     transform: scale(1.00); /* Slightly enlarge on hover */

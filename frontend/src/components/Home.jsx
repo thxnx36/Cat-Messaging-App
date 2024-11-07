@@ -16,6 +16,18 @@ const Home = ({ onLogout }) => {
   const [isCatPersonalityModalVisible, setIsCatPersonalityModalVisible] = useState(false); // สถานะสำหรับ CatPersonalityModal
   const navigate = useNavigate(); 
   const location = useLocation();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
 
   useEffect(() => {
     const storedUsername = localStorage.getItem('username');
@@ -37,6 +49,7 @@ const Home = ({ onLogout }) => {
       socket.disconnect();
     };
   }, []);
+
 
   const handleLogout = () => {
     Modal.confirm({
@@ -117,21 +130,21 @@ const Home = ({ onLogout }) => {
           )}
         </StyledComponents.Nav>
       </StyledComponents.Header>
-      <StyledComponents.Content style={{ position: 'relative' }}>
-        {username && (
-          <>
-            <StyledComponents.StyledButton onClick={handleChatClick}>
-              {/* ปุ่มสำหรับเปิด Modal หลัก */}
-            </StyledComponents.StyledButton>
+      <StyledComponents.Content>
+      {username && (
+        <>
+          {isMobile ? (
             <div style={{ 
-              position: 'absolute', 
-              top: '20px', 
-              left: '0', 
-              right: '0', 
               display: 'flex',
-              justifyContent: 'space-between',
-              padding: '0 20px',
+              flexDirection: 'column',  
+              alignItems: 'center',     
+              justifyContent: 'center', 
+              marginTop: '-130px',
+              gap: '12px'             
             }}>
+              <StyledComponents.StyledButton onClick={handleChatClick}>
+                {/* ปุ่มสำหรับเปิด Modal หลัก */}
+              </StyledComponents.StyledButton>
               <StyledComponents.StyledButton1 onClick={handleNewButtonClick1}>
                 {/* ปุ่มสำหรับเปิด Modal แบบทดสอบ */}
               </StyledComponents.StyledButton1>
@@ -139,11 +152,34 @@ const Home = ({ onLogout }) => {
                 {/* ปุ่มสำหรับเปิด Modal นิสัยแมว */}
               </StyledComponents.StyledButton2>
             </div>
-
-            <div>{onlineUsersCount} online cats</div>
-          </>
-        )}
-      </StyledComponents.Content>
+          ) : (
+            <>
+              <StyledComponents.StyledButton onClick={handleChatClick}>
+                {/* ปุ่มสำหรับเปิด Modal หลัก */}
+              </StyledComponents.StyledButton>
+              <div style={{ 
+                position: 'absolute', 
+                top: '20px', 
+                left: '0', 
+                right: '0', 
+                display: 'flex',
+                justifyContent: 'space-between',
+                marginTop: '120px',
+                padding: '0 20px',
+              }}>
+                <StyledComponents.StyledButton1 onClick={handleNewButtonClick1}>
+                  {/* ปุ่มสำหรับเปิด Modal แบบทดสอบ */}
+                </StyledComponents.StyledButton1>
+                <StyledComponents.StyledButton2 onClick={handleNewButtonClick2}>
+                  {/* ปุ่มสำหรับเปิด Modal นิสัยแมว */}
+                </StyledComponents.StyledButton2>
+              </div>
+            </>
+          )}
+          <div>{onlineUsersCount} online cats</div>
+        </>
+      )}
+    </StyledComponents.Content>
       <GifAnimation />
 
       <div style={{ 
