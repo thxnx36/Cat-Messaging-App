@@ -8,7 +8,7 @@ const AnimatedGif = styled.img`
   animation: moveGif 20s linear infinite;
   
   // ตั้งค่าตำแหน่งเริ่มต้นสำหรับจอใหญ่
-  top: 84%;
+  top: 85%;
   left: -300px; 
 
   @keyframes moveGif {
