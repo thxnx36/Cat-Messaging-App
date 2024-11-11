@@ -35,7 +35,7 @@ const AnimatedGif = styled.img`
     width: 200px; /* ลดขนาด GIF */
     top: 90%; /* ปรับตำแหน่งตามความเหมาะสม */
     animation: moveGif 15s linear infinite; /* ปรับความเร็วของ animation */
-    top: 87%;
+    top: 88%;
     left: -100px; 
   }
 `;
