@@ -19,7 +19,7 @@ const io = new Server(server, {
 // Middleware
 app.use(express.json()); 
 app.use(cors({
-  origin: 'http://localhost:3000',
+  origin: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true,
 }));

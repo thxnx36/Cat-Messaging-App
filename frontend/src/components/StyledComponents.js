@@ -168,6 +168,7 @@ FooterText: styled.p`
   font-family: "Josefin Sans", sans-serif;
 
   @media (max-width: 768px) {
+      margin-top: 55px;
       width: 200px;
       height: 80px;
 

@@ -8,7 +8,7 @@ const AnimatedGif = styled.img`
   animation: moveGif 20s linear infinite;
   
   // ตั้งค่าตำแหน่งเริ่มต้นสำหรับจอใหญ่
-  top: 85%;
+  top: 84.2%;
   left: -300px; 
 
   @keyframes moveGif {
@@ -35,7 +35,7 @@ const AnimatedGif = styled.img`
     width: 200px; /* ลดขนาด GIF */
     top: 90%; /* ปรับตำแหน่งตามความเหมาะสม */
     animation: moveGif 15s linear infinite; /* ปรับความเร็วของ animation */
-    top: 88%;
+    top: 86.8%;
     left: -100px; 
   }
 `;

@@ -31,7 +31,7 @@ const CustomButton = styled.button.attrs(({ isSelected, ...rest }) => ({
   width: 105px;
   height: 43px;
   max-width: 100%;
-  position: relative;
+  position: 120px;
 
   @media (max-width: 768px) {
     width: 90px;  /* ลดขนาดปุ่ม */
@@ -70,6 +70,7 @@ const CustomButton2 = styled.button.attrs(({ ...rest }) => ({
   @media (max-width: 768px) {
     width: 100px;  /* ลดขนาดปุ่ม */
     height: 40px; /* ลดขนาดปุ่ม */
+    margin-top: -10px;
   }
 `;
 
@@ -130,7 +131,7 @@ const CustomButtonWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 10px;
+  gap: 6px;
 `;
 
 const ChatModal = ({ isVisible, onClose, username }) => {
@@ -166,7 +167,7 @@ const ChatModal = ({ isVisible, onClose, username }) => {
   const catColors = {
     แมววัว: '#000000',
     แมวส้ม: '#FFA500',
-    แมวเห็ด: '#756247',
+    // แมวเห็ด: '#756247',
     แมวปลาเผา: '#808080',
     แมวสามสี: '#ffffff',
   };
@@ -174,7 +175,7 @@ const ChatModal = ({ isVisible, onClose, username }) => {
   const catImages = {
     แมววัว: require('../assets/blackwhitecat.png'),
     แมวส้ม: require('../assets/orangecat.png'),
-    แมวเห็ด: require('../assets/browncat.png'),
+    // แมวเห็ด: require('../assets/browncat.png'),
     แมวปลาเผา: require('../assets/greywhitecat.png'),
     แมวสามสี: require('../assets/threecolorcat.png'),
   };
@@ -182,7 +183,7 @@ const ChatModal = ({ isVisible, onClose, username }) => {
   const buttonCatImages = {
     แมววัว: require('../assets/cowcatbuttom.png'),
     แมวส้ม: require('../assets/orangecatbuttom.png'),
-    แมวเห็ด: require('../assets/browncatbuttom.png'),
+    // แมวเห็ด: require('../assets/browncatbuttom.png'),
     แมวปลาเผา: require('../assets/fishpaocatbuttom.png'),
     แมวสามสี: require('../assets/threecolorcatbuttom.png'),
   };
@@ -209,7 +210,7 @@ const ChatModal = ({ isVisible, onClose, username }) => {
           <img
             src={titleImage}
             alt="Choose your cat color"
-            style={{ maxWidth: '50%', marginBottom: '-5px',marginTop: '-25px' }}
+            style={{ maxWidth: '60%', marginBottom: '-5px',marginTop: '-25px' }}
           />
         </div>
         <div className="flex flex-col items-center">
@@ -236,7 +237,7 @@ const ChatModal = ({ isVisible, onClose, username }) => {
               maxHeight: '120px',
               width: 'auto',
               objectFit: 'contain',
-              marginTop: '15px',
+              // marginTop: '5px',
             }}
           />
         </div>
@@ -245,7 +246,7 @@ const ChatModal = ({ isVisible, onClose, username }) => {
             <img
               src={titleImage2}
               alt="Choose your room type"
-              style={{ maxWidth: '50%', marginBottom: '5px' }}
+              style={{ maxWidth: '60%', marginBottom: '-5px',marginTop: '-15px' }}
             />
           </div>
           <CustomButtonWrapper>

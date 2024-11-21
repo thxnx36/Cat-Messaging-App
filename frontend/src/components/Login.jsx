@@ -12,26 +12,29 @@ const Login = ({ onLogin }) => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch('http://localhost:5003/api/users/login', {
+      const response = await fetch('http://172.20.10.13:3000/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ email, password }),
       });
-
+  
       const data = await response.json();
       if (response.ok) {
         localStorage.setItem('username', data.username);
         onLogin(data.username);
         navigate('/');
       } else {
-        message.error(data.message);
+        // แสดงข้อความ error ที่มาจากเซิร์ฟเวอร์
+        alert(`Error: ${data.message || 'Login failed.'}`);
       }
     } catch (error) {
-      message.error('Login failed!');
+      // แสดงข้อความ error ที่เกิดจากข้อผิดพลาดอื่น ๆ เช่น เซิร์ฟเวอร์ไม่ตอบสนอง
+      alert(`Unexpected error: ${error.message}`);
     }
   };
+  
 
   return (
     <StyledComponents.ContainerLogin>
